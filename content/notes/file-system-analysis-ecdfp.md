@@ -181,7 +181,6 @@ How do you reach the data area location?
 
 Data Area Location = num of reserved sector + FAT1 + FAT2
 
-
 Data Area Location = 6654 + (2*769) = 8192
 
 ## Root Directory
