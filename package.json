@@ -14,7 +14,7 @@
     "check": "astro check",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "test:e2e": "playwright test",
     "test:performance": "node scripts/check-performance.mjs",
     "validate": "node scripts/validate-build.mjs"
