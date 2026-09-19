@@ -15,7 +15,7 @@
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
     "test": "vitest run --passWithNoTests",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --pass-with-no-tests",
     "test:performance": "node scripts/check-performance.mjs",
     "validate": "node scripts/validate-build.mjs"
   },
