@@ -1,22 +1,22 @@
 ---
-title: "HackTheBox The Tunnel Without Walls"
+title: 'HackTheBox The Tunnel Without Walls'
 date: 2025-12-28 20:00:00
 category: HackTheBox
-description: "A memory dump from a connected Linux machine reveals covert network connections, fake services, and unusual redirects. Holmes investigates further to uncover how the attacker is manipulating the entire network!"
-tags: [HackTheBox,Memory_Forensics]
+description: 'A memory dump from a connected Linux machine reveals covert network connections, fake services, and unusual redirects. Holmes investigates further to uncover how the attacker is manipulating the entire network!'
+tags: [HackTheBox, Memory_Forensics]
 cover: /images/write-up/HackTheBox_Sherlock_Holmes_The_Tunnel_Without_Walls/1.jpg
 toc: true
 ---
 
 ## Scenario:
+
 A memory dump from a connected Linux machine reveals covert network connections, fake services, and unusual redirects. Holmes investigates further to uncover how the attacker is manipulating the entire network!
 
 ## Tools
- - Vol3
 
- in the first we use vol3 to check Debian version to download symbol
+- Vol3
 
-
+in the first we use vol3 to check Debian version to download symbol
 
 ```bash
 $ vol3 -f memdump.mem banner
@@ -29,20 +29,21 @@ Offset  Banner
 
 ```
 
- you can see linux version you can download it from here
+you can see linux version you can download it from here
 
 [Download Link](https://packages.debian.org/bullseye/amd64/linux-image-5.10.0-35-amd64-dbg/download)
 
+after download it let’s go to make it as a symbol to complete your analysis
 
- after download it let’s go to make it as a symbol to complete your analysis
 ```bash
 $ $dpkg -x linux-image-5.10.0-35-amd64-dbg_5.10.237-1_amd64.deb
 
 $ dwarf2json linux -elf from/path/usr/lib/debug/boot/vmlinux-5.10.0-35-amd64 --system-map path/usr/lib/debug/boot/System.map-5.10.0-35-amd64| xz -c > debian-11_5.10.0-35-amd64.json.xz
 
-$ dpkg -x linux-image-5.10.0-35-amd64-dbg_5.10.237-1_amd64.deb . 
+$ dpkg -x linux-image-5.10.0-35-amd64-dbg_5.10.237-1_amd64.deb .
 ```
- after complete all steps now you are ready to investigate
+
+after complete all steps now you are ready to investigate
 
 ## Task1 → What is the Linux kernel version of the provided image?
 
@@ -65,6 +66,7 @@ PID     Process CommandTime     Command
 13608   bash    2025-09-03 08:17:04.000000 UTC  ps aux
 
 ```
+
 attacker after get initial access run some command to enumerate running process and discovery os version
 
 ## Task3 → After the initial information gathering, the attacker authenticated as a different user to escalate privileges. Identify and submit that user’s credentials.
@@ -75,16 +77,19 @@ and `grep json.log` you can found a lot of file but when compare timestamp by ti
 
 ![Image](/images/write-up/HackTheBox_Sherlock_Holmes_The_Tunnel_Without_Walls/1_3_1.jpg)
 ![Image](/images/write-up/HackTheBox_Sherlock_Holmes_The_Tunnel_Without_Walls/1_3_2.jpg)
+
 ```bash
 0x9b33882a9000  /       8:1     1053804 0x9b3386436f80  REG     1       1       -rw-r-----      2025-09-03 08:17:30.003030 UTC  2025-09-03 08:18:08.715033 UTC  2025-09-03 08:18:08.715033 UTC  /var/lib/docker/containers/a1a73e71a21b324a37f3d02eaf3d15514898078716c13ab60b8f12adf21e4a5b/a1a73e71a21b324a37f3d02eaf3d15514898078716c13ab60b8f12adf21e4a5b-json.log  391
 
 ```
+
 now let’s go to dump Docker logs file
 
 ```bash
 python3 vol.py -f memdump.mem linux.pagecache.InodePages --inode  0x9b3386436f80  --dump
 
 ```
+
 open a file and extract the hash and crack it usage wordlist rockyou.txt
 
 ![Image](/images/write-up/HackTheBox_Sherlock_Holmes_The_Tunnel_Without_Walls/1_3_2.jpg)
@@ -112,6 +117,7 @@ Dump the malicious kernel module and inspect it using strings or modinfo after r
 python3 vol.py -f memdump.mem linux.pagecache.InodePages --inode  0x9b3386454a80  --dump
 
 ```
+
 ![Image](/images/write-up/HackTheBox_Sherlock_Holmes_The_Tunnel_Without_Walls/1_5_1.jpg)
 
 ## Task6 → The next step in the attack involved issuing commands to modify the network settings and installing a new package. What is the name and PID of the package? (package name,PID)
@@ -136,6 +142,7 @@ Search for the `dnsmasq.leases` file and dump it.
 python3 vol.py -f memdump.mem linux.pagecache.InodePages --inode  0x9b33ac25b8c0 --dump
 
 ```
+
 ![Image](/images/write-up/HackTheBox_Sherlock_Holmes_The_Tunnel_Without_Walls/1_7_1.jpg)
 
 ## Task8 → After receiving the new malicious network configuration, the user accessed the City of CogWork-1 internal portal from this workstation. What is their username?
@@ -155,6 +162,7 @@ now the attacker can intercept and redirect traffic wherever they want Moreover 
 python3 volatility3/vol.py -f memdump.mem linux.pagecache.InodePages --inode  0x9b339df93420 --dump
 
 ```
+
 ![Image](/images/write-up/HackTheBox_Sherlock_Holmes_The_Tunnel_Without_Walls/1_9_3.jpg)
 
 ## Task10 → To perform this attack, the attacker redirected the original update domain to a malicious one. Identify the original domain and the final redirect IP address and port. (domain,IP:port)

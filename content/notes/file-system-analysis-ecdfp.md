@@ -1,5 +1,5 @@
 ---
-title: "File Systems Analysis From ECDFP"
+title: 'File Systems Analysis From ECDFP'
 date: 2026-02-18 00:00:00
 category: ECDFP_Notes
 description: A concise guide to file system forensics, covering FAT and NTFS structures, deleted file recovery, file carving, and practical tools like SleuthKit, Autopsy, and PhotoRec.
@@ -11,7 +11,7 @@ toc: true
 
 # File System Analysis
 
-## Introduction 
+## Introduction
 
 As we all know, data is stored on the disk as 0s and 1s, but in order for it to be understandable to humans, there must be a file system responsible for organizing and storing the data properly.
 
@@ -28,14 +28,16 @@ However, there is still some ambiguity: how do we know which 0s and 1s belong to
 FAT file system is one of the oldest file systems, dating back to MS-DOS. It is essentially an allocation/index table that tracks which clusters belong to each file and which clusters are free. FAT is commonly used on removable media and has not disappeared; it is still widely used with USB drives and SD cards to this day.
 
 ### The different types of the FAT file system
- - FAT 12
- - FAT 16
- - FAt 32
- - Extended file allocation table (exFAT)
+
+- FAT 12
+- FAT 16
+- FAt 32
+- Extended file allocation table (exFAT)
 
 The difference between these numbers is the number of clusters that can be addressed.
 
 ### what is the cluster?
+
 A cluster is the smallest allocation unit that can be used by a file.
 
 ### what is the cluster size?
@@ -52,9 +54,9 @@ Cluster is a logical unit but sector is a physical unit
 
 There are two ways the number of sectors per cluster can be set:
 
- - Automatically (default) during formatting, based on the disk/partition size; the chosen value is stored in the boot record.
+- Automatically (default) during formatting, based on the disk/partition size; the chosen value is stored in the boot record.
 
- - Manually by specifying a cluster size during formatting (if the formatting tool allows it); it is also recorded in the boot record.
+- Manually by specifying a cluster size during formatting (if the formatting tool allows it); it is also recorded in the boot record.
 
 Note:
 
@@ -94,10 +96,11 @@ Reserved Area in FAT 12/16
 Reserved Area in FAT 32
 
 ![Image](/images/notes/file-system-analysis-ecdfp/8.png)
- - sectro 0 & 6 are used fro volume boot sector
- - sector 1 & 7 are used for file system information
- - sector 2 & 8 are used for bootstrap code
- - The remaining sectors are reserved for file system use and may include backups (e.g., a backup boot sector), depending on the system configuration.
+
+- sectro 0 & 6 are used fro volume boot sector
+- sector 1 & 7 are used for file system information
+- sector 2 & 8 are used for bootstrap code
+- The remaining sectors are reserved for file system use and may include backups (e.g., a backup boot sector), depending on the system configuration.
 
 ### Boot Sector
 
@@ -105,14 +108,14 @@ boot sector for FAT12/16
 
 ![Image](/images/notes/file-system-analysis-ecdfp/9.png)
 
-
 #### Note: the sizes for BPB & EBPB & bootstrap code varies based on the operating system and versions.
+
 boot sector for FAT32
 
 ![Image](/images/notes/file-system-analysis-ecdfp/10.png)
 
-
 ### examble:
+
 [Go to image 1](#image-1)
 ![Image](/images/notes/file-system-analysis-ecdfp/11.png)
 
@@ -133,34 +136,34 @@ FSINFO is typically located at sector 1 (right after the boot sector), as specif
 ![Image](/images/notes/file-system-analysis-ecdfp/14.png)
 
 - 0-3 --> FSInfo signature = `52 52 61 64 `= RRaA
-- 4-483 --> Reserved 
+- 4-483 --> Reserved
 - 484-487 --> secound file signature = `72 72 41 61 `= rrAa
 - 488-491 --> num of free clusters = `15 5c 01 00 `convert to little endian and check to decimal value = 89109
-- 492-495 --> next free cluster = `ED 23 00 00 `convert to little endian and check to decimal value = 9197 
+- 492-495 --> next free cluster = `ED 23 00 00 `convert to little endian and check to decimal value = 9197
 - 496-507 --> Reserved
 - 508-511 --> sector signatrue = `00 00 55 AA `
 
-### How do you calculate the free space? 
+### How do you calculate the free space?
 
 Now we know the available free clusters, and to calculate the free space we need to know how many sectors there are per cluster. From the [previous sector](#img-1) , we can determine the sectors per cluster, and the calculation is as follows:
 
 free-space = sector per cluster * num of free cluster * 512
 
-free-space = 2 * 89109 * 512 = 91,247,616 byte 
+free-space = 2 * 89109 * 512 = 91,247,616 byte
 
 ![Image](/images/notes/file-system-analysis-ecdfp/15.png)
-
 
 ## FAT Area
 
 The FAT table is what maps clusters within the file system.
 
 ### FAT32 Entry
+
 Each entry in the FAT table consists of 4 bytes, which indicate the cluster’s status as follows:
 
 - free cluster --> `00 00 00 00 `
 - reserved cluster --> `00 00 00 01 `
-- chain of cluster --> from `0 00 00 02 `to `0F FF FF EF `and indicate to next cluster 
+- chain of cluster --> from `0 00 00 02 `to `0F FF FF EF `and indicate to next cluster
 - reserved Values --> from `0F FF FF F0 `To `0F FF FF F6 `
 - bad cluster --> `0F FF FF F7 `
 - file in 1 cluster or end of cluster chain --> from `0F FF FF F8 `to `0F FF FF FF `
@@ -168,6 +171,7 @@ Each entry in the FAT table consists of 4 bytes, which indicate the cluster’s 
 Note: the first 8 byte in FAT area is reserved first 4 reserved to Media-Type and second 4 to Volume-Status
 
 ### FAT entry examble:
+
 ![Image](/images/notes/file-system-analysis-ecdfp/16.png)
 
 ## Data Area
@@ -176,16 +180,18 @@ All of the above is part of the file system area, while the data area is the par
 
 How do you reach the data area location?
 
-Data Area Location = num of reserved sector + FAT1 + FAT2 
+Data Area Location = num of reserved sector + FAT1 + FAT2
 [from boot sector](#img-1)
 
 Data Area Location = 6654 + (2*769) = 8192
 
 ## Root Directory
+
 The root directory is usually located at the beginning of cluster 2, and it is also specified in the boot sector entry.
 
 FAT32 file system have two types of directory entries
-- short file name  (SFN)
+
+- short file name (SFN)
 - long file name (LFN)
 
 ### Short File Name Structrue
@@ -206,19 +212,20 @@ LFN can support a name up to 255 characters. Each character is represented by 2 
 However, an SFN is still required even when an LFN exists. In this case, the SFN is typically generated using part of the file name (often the first 6 characters), followed by a “~” and a number, to uniquely identify the file when multiple names would otherwise produce the same 8.3 alias.
 
 ### Long File Name Structure:
+
 ![Image](/images/notes/file-system-analysis-ecdfp/20.png)
 
 ## File Deletion
 
 When a file is deleted in FAT, the first byte of the SFN name is replaced with `0xE5` to mark the directory entry as deleted, and the file’s content may remain on disk until it is overwritten by new data.
 
-
-##  New Technology File System (NTFS)
+## New Technology File System (NTFS)
 
 NTFS was developed to enhance file management, support large file storage beyond the 4GB limitation of FAT32, and improve data integrity by reducing the risk of file corruption during power failures.
 Unlike the FAT file system, which divides the disk into boot sectors, a FAT table, and a data area, NTFS treats almost everything on the disk as a file, including metadata.
 
 ## Core NTFS Features
+
 - Journaling
 - Scalability
 - Hard Links
@@ -246,11 +253,12 @@ A feature that generates point-in-time snapshots of files and volumes, even whil
 
 ## NTFS File Structrue
 
-NTFS relies on several metadata files that define its fundamental structure, including $Boot, $LogFile,  $MFT. 
+NTFS relies on several metadata files that define its fundamental structure, including $Boot, $LogFile, $MFT.
 
 ![Image](/images/notes/file-system-analysis-ecdfp/21.png)
 
 ### Volume Boot Record
+
 the `$Boot` file holds the bootstrap code for bootable volumes, or an error message if the volume is not bootable.
 
 ![Image](/images/notes/file-system-analysis-ecdfp/22.png)
@@ -262,7 +270,7 @@ The Master File Table (MFT) is composed of multiple entries, where each entry st
 ### The reserved entries in the MFT file
 
 ![Image](/images/notes/file-system-analysis-ecdfp/23.png)
- 
+
 ### MFT entry
 
 ![Image](/images/notes/file-system-analysis-ecdfp/24.png)
@@ -280,74 +288,85 @@ Fixup arrays are used to detect sector corruption within multi-sector structures
 The MFT File Reference Number is a unique value assigned to each file record, used to uniquely identify files. It is also referenced in system components such as $LogFile and the USN Journal.
 
 ## NTFS Attributes
+
 - Resident && Non-Resident
-If a file is small (typically under ~700 bytes), its data is stored directly inside the MFT record as a resident attribute. For larger files, NTFS uses non-resident attributes that store run lists pointing to the clusters where the file data is physically located.
+  If a file is small (typically under ~700 bytes), its data is stored directly inside the MFT record as a resident attribute. For larger files, NTFS uses non-resident attributes that store run lists pointing to the clusters where the file data is physically located.
 
 - Standard Information Attributes
 
- The Standard Information attribute stores essential file metadata, including timestamps (creation, modification, access), security descriptors, and other core file properties.
+The Standard Information attribute stores essential file metadata, including timestamps (creation, modification, access), security descriptors, and other core file properties.
 
 - File Name
 
- The File Name attribute stores the file’s name along with a reference to its parent directory, which is used to reconstruct the file path.
+The File Name attribute stores the file’s name along with a reference to its parent directory, which is used to reconstruct the file path.
 
 ## File And RAM Slack
 
 - File Slack
 
- File slack is the unused space in the last allocated cluster of a file. For example, if the cluster size is 4 KB and the file occupies only 3 KB, the remaining 1 KB is file slack.
+File slack is the unused space in the last allocated cluster of a file. For example, if the cluster size is 4 KB and the file occupies only 3 KB, the remaining 1 KB is file slack.
 
 Note:if a deleted file is partially overwritten by a smaller file (e.g., 2 KB), only the corresponding portion of the original data is overwritten. The remaining unallocated space may still contain residual data, which can potentially be recovered during forensic analysis.
 
 - RAM Slack
 
- RAM slack was eliminated in modern systems because it posed a data leakage risk. Previously, unused space within a cluster could be padded with residual data from RAM, which might include sensitive information such as passwords.
+RAM slack was eliminated in modern systems because it posed a data leakage risk. Previously, unused space within a cluster could be padded with residual data from RAM, which might include sensitive information such as passwords.
 
 ## File Carving
- File carving is a forensic technique employed to reconstruct and recover deleted files directly from raw disk or memory data or network traffic, without relying on file system metadata.
 
+File carving is a forensic technique employed to reconstruct and recover deleted files directly from raw disk or memory data or network traffic, without relying on file system metadata.
 
-##  The SleuthKit Tools
+## The SleuthKit Tools
 
-- mmls 
- ```bash 
- mmls disk.img
- ##  To gather information about the disk partitions
- ```
+- mmls
+
+```bash
+mmls disk.img
+##  To gather information about the disk partitions
+```
+
 - fsstat
- ```bash
- fsstat -o 2048 disk.img
- ## To gather information about file system
- ```
+
+```bash
+fsstat -o 2048 disk.img
+## To gather information about file system
+```
+
 - fls
- ```bash
- fls -o 2048 disk.img
- ## displays files and folders (including deleted)
- ```
+
+```bash
+fls -o 2048 disk.img
+## displays files and folders (including deleted)
+```
+
 - tsk_recover
- ```bash
- tsk_recover -o 2048 disk.img output_folder/
- ## to recovery all files
- ```
+
+```bash
+tsk_recover -o 2048 disk.img output_folder/
+## to recovery all files
+```
+
 - blkls
- ```bash
- blkls -o 2048 disk.img > unalloc.bin
- ## to extract all unallocated space
- ```
+
+```bash
+blkls -o 2048 disk.img > unalloc.bin
+## to extract all unallocated space
+```
 
 ## Other Tools
-- Autopsy 
+
+- Autopsy
 - testDisk
- To repair a corrupted disk
+  To repair a corrupted disk
 - photoRec
- to recover deleted file
+  to recover deleted file
 - Fiwalk
- extract metadata from all files  
-- formost 
- to recover deleted file
+  extract metadata from all files
+- formost
+  to recover deleted file
 - scalpel
- to recover deleted file
+  to recover deleted file
 - bluk_extractor
- extract important data from disk, memory, network, like enc keys, emails, ips, urls
+  extract important data from disk, memory, network, like enc keys, emails, ips, urls
 
 ## Thanks for reading

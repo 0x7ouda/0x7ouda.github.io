@@ -1,11 +1,11 @@
 ---
-title: "Reverse Phone SEO Cloaking Infrastructure, Synthetic Phone Generation, and Ad Monetization"
-description: "An OSINT-driven investigation into SEO cloaking infrastructure, deterministic phone-number generation, redirects, and ad-based monetization."
+title: 'Reverse Phone SEO Cloaking Infrastructure, Synthetic Phone Generation, and Ad Monetization'
+description: 'An OSINT-driven investigation into SEO cloaking infrastructure, deterministic phone-number generation, redirects, and ad-based monetization.'
 date: 2026-08-17
-category: "OSINT"
+category: 'OSINT'
 tags:
   - OSINT
-cover: "/images/research/reverse-phone-seo-cloaking/0.png"
+cover: '/images/research/reverse-phone-seo-cloaking/0.png'
 toc: true
 ---
 
@@ -30,24 +30,27 @@ While conducting OSINT research on the sender’s phone number, I encountered an
 Things got even stranger. I scanned the subdomain using VirusTotal and found that it had been flagged as malicious by one or more security vendors. I then went back to the page and inspected its source code.
 
 ```html
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    
-<meta name="robots" content="noarchive" />
-<meta name="referrer" content="unsafe-url" />
-<script>
-(function(){
-    const d="KGZ1bmN0aW9uKCl7CiAgICBjb25zdCBkPSJLR1oxYm1OMGFXOXVLQ2w3Q2lBZ0lDQmpiMjV6ZENCa1BTSmFSemxxWkZjeGJHSnVVWFZaVjFKclVsaGFiR0p1..."; // Base64 payload truncated for readability
-    eval(decodeURIComponent(escape(atob(d))));
-  })();
-</script>
-</head>
-<body>
-<p id="Blog1"></p>
-</body>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="robots" content="noarchive" />
+    <meta name="referrer" content="unsafe-url" />
+    <script>
+      (function () {
+        const d =
+          'KGZ1bmN0aW9uKCl7CiAgICBjb25zdCBkPSJLR1oxYm1OMGFXOXVLQ2w3Q2lBZ0lDQmpiMjV6ZENCa1BTSmFSemxxWkZjeGJHSnVVWFZaVjFKclVsaGFiR0p1...'; // Base64 payload truncated for readability
+        eval(decodeURIComponent(escape(atob(d))));
+      })();
+    </script>
+  </head>
+  <body>
+    <p id="Blog1"></p>
+  </body>
 </html>
 ```
 
@@ -56,53 +59,65 @@ Things got even stranger. I scanned the subdomain using VirusTotal and found tha
 I found that the page contained JavaScript code that had been encoded in Base64 multiple times.
 
 ```javascript
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function () {
   //var currentUrl = window.location.origin + window.location.pathname;
   var currentUrl = window.location.href;
   var existing = document.querySelector("link[rel='canonical']");
-  
+
   if (existing) {
-    existing.setAttribute("href", currentUrl);
+    existing.setAttribute('href', currentUrl);
   } else {
-    var link = document.createElement("link");
-    link.setAttribute("rel", "canonical");
-    link.setAttribute("href", currentUrl);
+    var link = document.createElement('link');
+    link.setAttribute('rel', 'canonical');
+    link.setAttribute('href', currentUrl);
     document.head.appendChild(link);
   }
 
-  var canonicalFromDom = document.querySelector("link[rel='canonical']").getAttribute("href");
+  var canonicalFromDom = document
+    .querySelector("link[rel='canonical']")
+    .getAttribute('href');
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-
-  (function() {
-    let language_detect = "";
+document.addEventListener('DOMContentLoaded', function () {
+  (function () {
+    let language_detect = '';
     if (navigator.language) {
       language_detect = navigator.language.slice(0, 2).toLowerCase();
     }
 
     const blockedLangs = [
-      "hi","ur","bn","pa","ta","te","ml","kn","gu","mr","or","as","id","ru"
+      'hi',
+      'ur',
+      'bn',
+      'pa',
+      'ta',
+      'te',
+      'ml',
+      'kn',
+      'gu',
+      'mr',
+      'or',
+      'as',
+      'id',
+      'ru',
     ];
 
-    const probIndia = !language_detect || blockedLangs.includes(language_detect);
+    const probIndia =
+      !language_detect || blockedLangs.includes(language_detect);
     const isGooglebot = /(googlebot|InspectionTool)/i.test(navigator.userAgent);
-    const fromGoogle = document.referrer.toLowerCase().includes("google");
+    const fromGoogle = document.referrer.toLowerCase().includes('google');
 
     if (isGooglebot) {
-      const s = document.createElement("script");
-      s.src = "ext.js";
+      const s = document.createElement('script');
+      s.src = 'ext.js';
       s.defer = true;
       document.head.appendChild(s);
-
     } else if (fromGoogle && !probIndia) {
-        
-        const destination = 'https://www.wrdforwrd.com';
-        window.location.replace(destination);   
-        
+      const destination = 'https://www.wrdforwrd.com';
+      window.location.replace(destination);
     } else if (probIndia) {
-        //const destination = 'https://www.spokeo.com/reverse-phone-lookup?g=phone_landing_5_A3579837731';
-        //window.location.replace(destination);
+      //const destination = 'https://www.spokeo.com/reverse-phone-lookup?g=phone_landing_5_A3579837731';
+      //window.location.replace(destination);
     }
   })();
 });
@@ -121,10 +136,11 @@ This means the page presents different behavior to search-engine crawlers and re
 The next step was to inspect the `ext.js` file.
 
 ```javascript
-(function(){
-    const d="KGZ1bmN0aW9uKCl7CiAgICBjb25zdCBkPSJLR1oxYm1OMGFXOXVLQ2w3Q2lBZ0lDQmpiMjV6ZENCa1BTSkRVMEZuV1RJNWRXTXpVV2RhYmtwMllsVmtkbUl5..."; // Base64 payload truncated for readability
-    eval(decodeURIComponent(escape(atob(d))));
-  })();
+(function () {
+  const d =
+    'KGZ1bmN0aW9uKCl7CiAgICBjb25zdCBkPSJLR1oxYm1OMGFXOXVLQ2w3Q2lBZ0lDQmpiMjV6ZENCa1BTSkRVMEZuV1RJNWRXTXpVV2RhYmtwMllsVmtkbUl5...'; // Base64 payload truncated for readability
+  eval(decodeURIComponent(escape(atob(d))));
+})();
 ```
 
 > **Note:** The full encoded blob has been truncated in this publication. The decoded JavaScript used for the analysis remains intact below.
@@ -488,7 +504,7 @@ function generateCompanyNameJSON(seed) {
 
 
  function deterministicPosition(seed, max = 30) {
-   // LCG (Linear Congruential Generator) 
+   // LCG (Linear Congruential Generator)
    let n = (seed * 9301 + 49297) % 233280;
    return (Math.floor((n / 233280) * max) + 1);
  }
@@ -516,7 +532,7 @@ function generateCompanyNameJSON(seed) {
    let digits = num.split('');
    let mixed1 = [];
    let mixed2 = [];
-   
+
    // Mischia le cifre in modo alternato
    for (let i = 0; i < digits.length; i++) {
   if (i % 2 === 0) {
@@ -528,10 +544,10 @@ function generateCompanyNameJSON(seed) {
 
    let tel4 = '0' + mixed1.join('') + mixed2.join('');
    let tel5 = '0' + mixed2.join('') + mixed1.join('');
-   
+
    tel4=tel4.substring(0,11);
    tel5=tel5.substring(0,11);
-   
+
    return { tel4, tel5 };
  }
 
@@ -578,13 +594,13 @@ function generateCompanyNameJSON(seed) {
    // prendi 1 sola parola (deterministica)
    const i = index % count;
    selected = [words[i]];
-  } 
+  }
   else if (mode === 2 && count >= 2) {
    // prendi 2 parole (deterministiche)
    const i1 = index % count;
    const i2 = (index + 1) % count;
    selected = [words[i1], words[i2]];
-  } 
+  }
   else {
    // usa tutto
    selected = words;
@@ -641,9 +657,9 @@ function generateCompanyNameJSON(seed) {
   //img.style.height = '160px';
 
   img.style.display = 'block';
-  img.style.margin = '0 auto';    
-  img.style.maxWidth = '100%';    
-  img.style.height = 'auto';      
+  img.style.margin = '0 auto';
+  img.style.maxWidth = '100%';
+  img.style.height = 'auto';
 
   //img.alt = 'Illustration - full report available';
   img.loading = 'lazy';
@@ -720,68 +736,68 @@ function generateCompanyNameJSON(seed) {
 */
 
 
-   
-   
+
+
 /*
    const imageSeed = Math.floor(rng() * 1000); // PRNG
    const gender = imageSeed % 2 === 0 ? "men" : "women";
    const imageIndex = imageSeed % 100;
    const imageURL = `https://randomuser.me/api/portraits/${gender}/${imageIndex}.jpg`;
    //console.log(gender+""+imageIndex);
-   
-   
-   
+
+
+
    let num = "";
    for (let d = 0; d < 10; d++) num += Math.floor(rng() * 10);
    const tel1 = `${num.slice(0,3)}-${num.slice(3,6)}-${num.slice(6)}`;
    const tel2 = "0" + num.substring(0,10);
    const { tel4, tel5 } = mixDigits(num.substring(0,10));
-   const telFull = `${num.slice(0,3)}${num.slice(3,6)}${num.slice(6)}`;  
-   
+   const telFull = `${num.slice(0,3)}${num.slice(3,6)}${num.slice(6)}`;
+
    if (i == 0) {
   //document.title = name; //+tel1
    }
-  
+
   let num6 = "";
   for (let d = 0; d < 10; d++) {
     num6 += Math.floor(rng() * 83);
   }
-  
+
   let num7 = "";
   for (let d = 0; d < 10; d++) {
     num7 += Math.floor(rng() * 61);
   }
-  
+
   let num8 = "";
   for (let d = 0; d < 10; d++) {
     num8 += Math.floor(rng() * 28);
   }
-  
+
   let num9 = "";
   for (let d = 0; d < 10; d++) {
     num9 += Math.floor(rng() * 41);
   }
-  
+
   let num10 = "";
   for (let d = 0; d < 10; d++) {
     num10 += Math.floor(rng() * 33);
   }
-  
+
   let num11 = "";
   for (let d = 0; d < 10; d++) {
     num11 += Math.floor(rng() * 74);
   }
-  
+
    tel6 = "0" + num6.substring(0, 10);
-   
+
    tel7 = "0" + num7.substring(0, 10);
-   
+
    tel8 = "0" + num8.substring(0, 10);
-   
+
    tel9 = "0" + num9.substring(0, 10);
-   
-   tel10 = "0" + num10.substring(0, 10);  
-   
+
+   tel10 = "0" + num10.substring(0, 10);
+
    tel11 = "0" + num11.substring(0, 10);
 
    if (tel2.substring(3,6) === tel5.substring(6,9)) {
@@ -875,7 +891,7 @@ function makeTel11Factory(baseNum, saltStr = "") {
 
   function makeTel11(i, k, Br) {
     const raw = i * 10 + k;   // 0..89999
-    const idx = permute(raw); // 0..89999 
+    const idx = permute(raw); // 0..89999
     const ten = TEN_MIN + ((idx * A + Br) % TEN_SPAN);
     return "0" + String(ten);
   }
@@ -925,7 +941,7 @@ let tel1Global = "";
 for (let i = 0; i < 9000; i++) {
 
   //const rowMixBase = fnv1a32("M|" + baseNum + "|" + hostAccount + "|" + i) % TEN_SPAN;
-  
+
   const rowMixBase = fnv1a32("M|" + baseNum + "|" + hostAccount + "|" + i);
   /*
   const Br = (B0 + rowMixBase) % TEN_SPAN;
@@ -947,25 +963,25 @@ for (let i = 0; i < 9000; i++) {
   const tel10 = makeTel11(i, 8, Br);
   const tel11 = makeTel11(i, 9, Br);
   */
-  
-  
-  
+
+
+
    const seed = baseNum * 1000 + i;
    const rng = seededPRNG(seed);
    const rngNew = seededPRNGnew(seed);
    //const newSeed = rngNew();
-   //const name = generateCompanyName(newSeed);   
+   //const name = generateCompanyName(newSeed);
 
   let num = "";
   for (let d = 0; d < 10; d++) num += Math.floor(rng() * 10);
-  
+
   //////const tel1 = `${num.slice(0,3)}-${num.slice(3,6)}-${num.slice(6)}`;
   const tel1  = makeTel11(i, 0, rowMixBase);
-  
+
   //tel1 = `${tel1.slice(0,3)}-${tel1.slice(3,7)}-${tel1.slice(7)}`;
-  
-  
-  
+
+
+
   const tel4  = makeTel11(i, 1, rowMixBase);
   const tel5  = makeTel11(i, 2, rowMixBase);
 
@@ -976,7 +992,7 @@ for (let i = 0; i < 9000; i++) {
   if (i==0) {
    //title=name;
    tel1Global=tel1;
-   
+
   }
 
   const tel2  = makeTel11(i, 3, rowMixBase);
@@ -1160,7 +1176,7 @@ const DESCRIPTIONS = [
   "<p>Assist customers and candidates through clear phone communication.</p>",
   "<p>Manage outbound and inbound calls to help schedule discussions and follow-ups.</p>",
   "<p>Provide structured telephone support to coordinate appointments efficiently.</p>",
-  
+
   "<p>Support phone-based communication by handling calls and coordinating appointment schedules.</p>",
   "<p>Engage with callers professionally and assist in arranging interviews and meetings.</p>",
   "<p>Carry out structured call activities focused on scheduling and customer coordination.</p>",
@@ -1183,7 +1199,7 @@ const DESCRIPTIONS = [
   "<p>Conduct professional call interactions to support scheduling and follow-up actions.</p>",
   "<p>Assist with call coordination activities to ensure smooth communication.</p>",
   "<p>Handle phone conversations that focus on organizing meetings and interviews.</p>",
-  "<p>Support business communication by managing appointment-related phone calls.</p>"  
+  "<p>Support business communication by managing appointment-related phone calls.</p>"
 ];
 
 function normalizeSeed(n) {
@@ -1357,7 +1373,7 @@ const SALARIES = [
      ð¦ VALORI DERIVATI (DETERMINISTICI)
      ===================================================== */
 
-  
+
   const description = pick(DESCRIPTIONS);
 
   // Remote flag (deterministic)
@@ -1375,8 +1391,8 @@ const SALARIES = [
 
   const today = new Date().toISOString().split("T")[0];
 
-  
-  
+
+
 /* =====================================================
      4) Phone generation using loc.dialCode (prefisso)
      ===================================================== */
@@ -1389,8 +1405,8 @@ const SALARIES = [
 
   const localNumber = generateLocalNumber(seed1);
   const telE164 = `+${loc.dialCode}-${tel1Global.substring(0,9)}###`; // e.g. +14165551234 style (not formatted with spaces)
-  
-  const jobTitle = "("+telE164+"), " + pick(JOB_TITLES) + " - " + loc.city;  
+
+  const jobTitle = "("+telE164+"), " + pick(JOB_TITLES) + " - " + loc.city;
 
   /* =====================================================
      ð§¾ JSON-LD JobPosting
@@ -1456,7 +1472,7 @@ const SALARIES = [
   s.type = "application/ld+json";
   s.textContent = JSON.stringify(jobPosting);
   /////////document.head.appendChild(s);
-  
+
   document.title = jobTitle;
 })();
 

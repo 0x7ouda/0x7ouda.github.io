@@ -95,11 +95,7 @@ for (const file of pages) {
       }
     }
 
-    if (
-      hash &&
-      ids.has(disk) &&
-      !ids.get(disk).has(decodeURIComponent(hash))
-    ) {
+    if (hash && ids.has(disk) && !ids.get(disk).has(decodeURIComponent(hash))) {
       failures.push(`${relative(root, file)}: missing anchor ${target}`);
     }
   }
@@ -137,10 +133,7 @@ const home = await readFile(join(root, 'index.html'), 'utf8');
 
 const inlineBytes = [
   ...home.matchAll(/<script type="module">([\s\S]*?)<\/script>/g),
-].reduce(
-  (sum, match) => sum + Buffer.byteLength(match[1]),
-  0,
-);
+].reduce((sum, match) => sum + Buffer.byteLength(match[1]), 0);
 
 console.log(
   `Validated ${pages.length} HTML pages, local links and anchors, SEO metadata, and required outputs.\nHomepage first-party JavaScript: ${((jsBytes + inlineBytes) / 1024).toFixed(1)} KiB uncompressed including inline modules (search index lazy-loaded).`,

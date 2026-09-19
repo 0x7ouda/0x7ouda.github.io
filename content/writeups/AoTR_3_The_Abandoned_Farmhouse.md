@@ -1,20 +1,20 @@
 ---
-title: "AoTR 3 The Abandoned Farmhouse"
+title: 'AoTR 3 The Abandoned Farmhouse'
 date: 2026-01-03 00:00:00
 category: HackTheBox
-tags: [HackTheBox,encrypted_disk]
+tags: [HackTheBox, encrypted_disk]
 cover: /images/write-up/AoTR_3_The_Abandoned_Farmhouse/0.png
 toc: true
-description: " The coordinates led police and investigator into winter, to a place far enough from everything that no one would notice if something went wrong."
+description: ' The coordinates led police and investigator into winter, to a place far enough from everything that no one would notice if something went wrong.'
 ---
 
 ## Sherlock Scenario
 
- Read the campaign introduction and supporting information at [Github](https://github.com/hackthebox/advent-of-the-relics)
+Read the campaign introduction and supporting information at [Github](https://github.com/hackthebox/advent-of-the-relics)
 
- The coordinates led police and investigator into winter, to a place far enough from everything that no one would notice if something went wrong. At the end of a frozen road stood a farmhouse that looked dead long before they arrived, dark, silent, and empty in the way abandoned places usually are. Whatever had been done there was already over, but it had not been finished cleanly, and the only thing left behind was a single disk pulled from the wreckage. Now it is all that remains of whatever was meant to happen next.
+The coordinates led police and investigator into winter, to a place far enough from everything that no one would notice if something went wrong. At the end of a frozen road stood a farmhouse that looked dead long before they arrived, dark, silent, and empty in the way abandoned places usually are. Whatever had been done there was already over, but it had not been finished cleanly, and the only thing left behind was a single disk pulled from the wreckage. Now it is all that remains of whatever was meant to happen next.
 
- The scenario portrayed in this challenge is entirely fictional and created solely for educational and entertainment purposes. Any resemblance to actual persons, living or dead, organizations, or real events is purely coincidental and unintentional. All characters, scenarios, and data presented are products of imagination.
+The scenario portrayed in this challenge is entirely fictional and created solely for educational and entertainment purposes. Any resemblance to actual persons, living or dead, organizations, or real events is purely coincidental and unintentional. All characters, scenarios, and data presented are products of imagination.
 
 ## Task 1
 
@@ -30,11 +30,10 @@ description: " The coordinates led police and investigator into winter, to a pla
 
 ##### Export this partition and rename it as encrypted_partition
 
-```bash 
+```bash
 cryptsetup luksDump encrypted_partition
 
 ```
-
 
 ```bash
 LUKS header information
@@ -64,8 +63,8 @@ Keyslots:
 	Time cost:  4
 	Memory:     601084
 	Threads:    1
-	Salt:       7e b0 5b 42 c6 1b 31 40 28 a1 5a cf 0b 66 a6 e9 
-	            57 d3 35 8b af de 4c b3 71 74 73 b2 28 58 27 aa 
+	Salt:       7e b0 5b 42 c6 1b 31 40 28 a1 5a cf 0b 66 a6 e9
+	            57 d3 35 8b af de 4c b3 71 74 73 b2 28 58 27 aa
 	AF stripes: 4000
 	AF hash:    sha256
 	Area offset:32768 [bytes]
@@ -76,14 +75,14 @@ Digests:
   0: pbkdf2
 	Hash:       sha256
 	Iterations: 75589
-	Salt:       75 9c 71 fb 7a e9 fd d0 48 5c 6a 73 08 95 27 5b 
-	            34 bd 24 92 f8 0c 76 1b d5 5b b7 65 e5 e9 01 2a 
-	Digest:     61 28 2c 40 03 2a 43 16 1b b2 36 53 a1 aa ae 92 
-	            6b 26 c8 2c e9 66 11 d4 74 1c 42 71 39 c5 c8 3b 
+	Salt:       75 9c 71 fb 7a e9 fd d0 48 5c 6a 73 08 95 27 5b
+	            34 bd 24 92 f8 0c 76 1b d5 5b b7 65 e5 e9 01 2a
+	Digest:     61 28 2c 40 03 2a 43 16 1b b2 36 53 a1 aa ae 92
+	            6b 26 c8 2c e9 66 11 d4 74 1c 42 71 39 c5 c8 3b
 
 ```
-## ✅ Answer: LUKS2
 
+## ✅ Answer: LUKS2
 
 ## Task 3
 
@@ -136,9 +135,9 @@ bulk_extractor swap_partition -o path/to/output
 After extensive research and using AI, I found that some of the keys in the file are dummy or test keys because their pattern looks unusual. Therefore, we will exclude the keys that start with:
 `00 01 02 03 04 05 06 07 08 09` AND We will also exclude the AES-128 keys And remove the duplicate keys.
 
-##### The remaining keys we have it now 
+##### The remaining keys we have it now
 
-```bash 
+```bash
 
 741395876	bd 86 fd c1 b2 9a 69 4a 52 5f af 51 5a 66 08 5d 04 8e f2 d7 cb 80 e6 c6 08 aa 3c 87 be bb f4 16	AES256
 874714562	0c 03 c1 f4 37 69 a1 4f 81 32 2e 5e 74 31 c1 2e 76 da a2 ba 3f 71 89 e9 eb 1c bf 9d 1a 1e 27 52	AES256
@@ -157,7 +156,6 @@ After extensive research and using AI, I found that some of the keys in the file
 ```
 
 ## ✅ Answer: `7ecc7f334da6d89ac0999e345fbf978d0fe513b16922b270ad9f9e32494130cb86bcf2e86b4e0bff31b8718f6306e226057bf13592afe8b6f5abafab6b2f8980`
-
 
 ## Task 4
 
@@ -218,7 +216,7 @@ $ sudo lvdisplay
   Read ahead sectors     auto
   - currently set to     256
   Block device           252:2
-   
+
   --- Logical volume ---
   LV Path                /dev/roadrush-vg/20251221
   LV Name                20251221
@@ -278,7 +276,6 @@ drwx------ 4 root root 4.0K Dec 31 02:13 cores
 
 ## ✅ Answer: 10.129.234.0
 
-
 ## Task 5
 
 ##### What is the name of the SMB share which was being used to share documents?
@@ -301,7 +298,6 @@ LPKSHHRH
 ```
 
 ## ✅ Answer: GOSPODSK
-
 
 ## Task 6
 
@@ -327,7 +323,7 @@ open file `Operation_Winter_Blackout_CLASSIFIED.pdf`
 
 ## ✅ Answer: 5960000
 
-## Task 7 
+## Task 7
 
 ##### What is the exact model of the drone that was modified for the operation?
 
@@ -335,21 +331,20 @@ open file `Operation_Winter_Blackout_CLASSIFIED.pdf`
 
 ![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/5.png)
 
-
 ## ✅ Answer: DJI Matrice 300
-
 
 ## Task 8 && 9
 
 ##### 8 What codeword is designated to initiate the attack?
-##### 9 At what exact time is the attack scheduled to be executed?
 
+##### 9 At what exact time is the attack scheduled to be executed?
 
 open file `Emergency_Protocols_CLASSIFIED.pdf`
 
 ![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/6.png)
 
 ## ✅ Answer 8 : FORST
+
 ## ✅ Answer 9 : 23:59:50
 
 ## Task 10
@@ -364,8 +359,4 @@ open file `Operation_Winter_Blackout_CLASSIFIED.pdf`
 
 ![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/8.png)
 
-
 # Thanks For Reading
-
-
-

@@ -1,8 +1,8 @@
 ---
-title: "Disk forensics notes from ECDFP"
+title: 'Disk forensics notes from ECDFP'
 date: 2026-01-21 00:00:00
 category: ECDFP_Notes
-description: "ECDFP notes covering disk forensics fundamentals, CHS/LBA addressing, MBR and GPT structures, boot records, and partition analysis with practical hex examples."
+description: 'ECDFP notes covering disk forensics fundamentals, CHS/LBA addressing, MBR and GPT structures, boot records, and partition analysis with practical hex examples.'
 tags: [ECDFP_Notes]
 cover: /images/notes/ECDFP_Notes/0.png
 toc: true
@@ -21,7 +21,6 @@ The notes cover both MBR and GPT partitioning schemes, including real-world hex 
 
 There are two disk addressing methods used to reference sectors on a disk: Cylinder-Head-Sector (CHS), which is a legacy physical-style addressing method, and Logical Block Addressing (LBA), which is a logical addressing method.
 
-
 ## examble:
 
 you need to access a firest sector in disk using CHS
@@ -32,20 +31,17 @@ S = 1, max is 63
 
 C = 0, max is 1023
 
-
 CHS addressing is that three bytes are used for addressing
 
 C -> 10 bits
 
 S -> 6 bits
 
-H -> 8 
-
+H -> 8
 
 examble to access first sector `hex 00 01 00` binnary `0000 0000 0000 0001 0000 0000` access the end sector `hex ff ff ff` binnary `1111 1111 1111 1111 1111 1111 `
 
 ![Image](/images/notes/ECDFP_Notes/1.png)
-
 
 now, if we want to calculate the total hard drive space, it would be as follows:
 
@@ -57,34 +53,27 @@ If the disk size is larger than 8 GB, we will use LBA.
 
 Due to the limitations of CHS, it was necessary to switch to LBA. However, some files still require CHS, so there must be a correlation between both. Note: CHS starts from index 1, while LBA starts from index 0.
 
-
 LBA = (((cylinder * head per cylinder) + head) * sector per track) + sector -1
 
 Question: consider a disk with 16 heads per cylinder and 63 sector per tracks what will the LBA address be for CHS address(2,3,4)
 
-
 LBA = (((2 * 16) +3 ) * 63) + 4 -1 = 2208
 
-Note: A sector is the smallest unit of an HDD that can be read from or written to, and its size is 512 bits. However, in SSDs, the page is the smallest unit that can be read or written, and its size is 4096 bytes. A group of pages together is called a block, which consists of 128 pages, each with a size of 4096 bytes. Therefore, the total block size can be calculated as follows. 
-
+Note: A sector is the smallest unit of an HDD that can be read from or written to, and its size is 512 bits. However, in SSDs, the page is the smallest unit that can be read or written, and its size is 4096 bytes. A group of pages together is called a block, which consists of 128 pages, each with a size of 4096 bytes. Therefore, the total block size can be calculated as follows.
 
 block = 128 * 4096 / 1024 = 512 KB
 
 ![Image](/images/notes/ECDFP_Notes/2.png)
 
-
-
 ![Image](/images/notes/ECDFP_Notes/3.png)
-
 
 ## The difference between Volume and partition
 
-  volume: is a collection of sectors that don’t have to be physically consequential (contiguous), but they are logically consequential
+volume: is a collection of sectors that don’t have to be physically consequential (contiguous), but they are logically consequential
 
- partition: is a collection of consequential number of sectors
+partition: is a collection of consequential number of sectors
 
 ![Image](/images/notes/ECDFP_Notes/4.png)
-
 
 Case #1:
 
@@ -98,25 +87,21 @@ Case #3:
 
 we have two disk drives, but we used only a partition from disk drive number one and the whole disk number two in order to create a drive that is the size of the partition plus the second disk
 
-
 #### summarize: A volume is a logical storage unit that can be backed by an entire disk, a single partition, or multiple disks and partitions.
 
-
 Now you must be asking: How does my system understand where each logical partition exists on the disk?
-
 
 The answer is very easy: use an addressing table!
 
 ![Image](/images/notes/ECDFP_Notes/5.png)
 
-
 ## Disk Partitioning
 
 ### Master Boot Record (MBR)
+
 MBR is the first sector of a disk `CHS = 0,0,1`, `LBA = 0`, that contains `boot code`, a `partition table` for up to four primary partitions, and a `signature`, and it is used to initiate the boot process in BIOS-based systems.
 
 ![Image](/images/notes/ECDFP_Notes/6.png)
-
 
 #### Boot code
 
@@ -126,17 +111,15 @@ Modern operating systems today require booting code that could not fit the 446 b
 
 ![Image](/images/notes/ECDFP_Notes/55.png)
 
-
 ###### The difference between MBR and VBR
 
 The MBR is located in the first sector of the disk and is responsible for locating the active partition, while the VBR is located at the beginning of a partition and contains file system–specific boot information used to load the operating system.
 
-#### Partition Table 
+#### Partition Table
 
 the HDD can be divided into only 4 primary partitions.
 
 ![Image](/images/notes/ECDFP_Notes/7.png)
-
 
 ###### Explanation of the 16 bytes of the partition entry in the partition table:
 
@@ -144,32 +127,29 @@ the HDD can be divided into only 4 primary partitions.
 
 ![Image](/images/notes/ECDFP_Notes/77.png)
 
-
 In an MBR-partitioned disk, if more than four partitions are needed, one primary partition can be designated as an extended partition, which acts as a container for multiple logical partitions, as follow
 
 ![Image](/images/notes/ECDFP_Notes/9.png)
-
 
 ## GUID Partition Table (GPT)
 
 GPT overcomes the limitations of MBR by supporting disks larger than 2 TB and allowing up to 128 partitions. Unlike MBR, GPT does not require extended partitions. It also improves reliability by maintaining a backup copy of the partition table and header at the end sector of the disk, whereas MBR represents a single point of failure.
 
-### GPT Layout 
- - Protective MBR
- - GPT Header
- - Partition Table 
- - Partitions
- - Backups from GPT header and partition table 
+### GPT Layout
+
+- Protective MBR
+- GPT Header
+- Partition Table
+- Partitions
+- Backups from GPT header and partition table
 
 ![Image](/images/notes/ECDFP_Notes/10.png)
 
-
-#### Protective MBR 
+#### Protective MBR
 
 The Protective MBR is located at LBA 0. It is an MBR header that contains boot code, but it is not used in the boot process. It exists solely to prevent legacy tools that do not understand the GPT header from overwriting the disk and repartitioning it. This protection is implemented using a partition entry with type `0xEE` in the MBR partition table.
 
 ![Image](/images/notes/ECDFP_Notes/11.png)
-
 
 #### GPT Header
 
@@ -179,7 +159,6 @@ offset is LBA 1
 
 examble:
 ![Image](/images/notes/ECDFP_Notes/13.png)
-
 
 - 00-07 --> EFI Signature `EFI PART`
 - 08-11 --> Revision `GPT Revision 1.0`
@@ -197,8 +176,6 @@ examble:
 - 88-91 --> partition table checksum `bba69660` CRC to ensure the partition entries integrity
 - 92-511 --> Reserved
 
-
-
 ## Partition entry
 
 ![Image](/images/notes/ECDFP_Notes/14.png)
@@ -206,23 +183,21 @@ examble:
 ![Image](/images/notes/ECDFP_Notes/15.png)
 
 ## examble:
-![Image](/images/notes/ECDFP_Notes/17.png)
 
+![Image](/images/notes/ECDFP_Notes/17.png)
 
 you can show the partition entry start from offset 1024
 
+- 1024-1039 --> partition type GUID `28 73 2a c1 1f f8 d2 11 ba 4b 00 a0 c9 3e c9 3b` = `c12a7328-f81f-11d2-ba4d-00a0c93ec93b` this type GUID = EFI system partition
 
-- 1024-1039 --> partition type GUID ` 28 73 2a c1 1f f8 d2 11 ba 4b 00 a0 c9 3e c9 3b ` = `c12a7328-f81f-11d2-ba4d-00a0c93ec93b` this type GUID = EFI system partition
+- 1040-1055 --> This GUID uniquely identifies the partition on the disk = `70 0d 04 f1 7e 36 bb 4a a1 d9 b6 30 30 02 8a 06` = `f1040d70-367e-a14a-d9b6-3030028a06`
 
-- 1040-1055 --> This GUID uniquely identifies the partition on the disk = ` 70 0d 04 f1 7e 36 bb 4a a1 d9 b6 30 30 02 8a 06 ` = `f1040d70-367e-a14a-d9b6-3030028a06`
+- 1056-1063 --> = starting LBA = `0x800` = 2048
 
-- 1056-1063 --> = starting LBA = `0x800` = 2048 
-
-- 1064-1071 --> = ending LBA = `0x327ff` = 206,847 
+- 1064-1071 --> = ending LBA = `0x327ff` = 206,847
 
 - 1072-1079 --> = flag is null
 - 1080-1151 --> = partition name = `EFI System Partition`
-
 
 ## Hidden Protected Area (HPA) && Device Configuration Overlay (DCO)
 
@@ -230,8 +205,8 @@ In short, HPA and DCO are mechanisms used to hide portions of a hard drive. This
 
 ![Image](/images/notes/ECDFP_Notes/16.png)
 
+#### Tools to detect HPA && DCO
 
-#### Tools to detect HPA && DCO 
 - hdparm
 - the sleuth kit
 - ATATools

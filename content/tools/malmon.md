@@ -1,11 +1,11 @@
 ---
-title: "MalMon"
-description: "A Windows-focused dynamic malware analysis and triage tool that monitors process trees, command lines, network connections, registry activity, and file I/O, then exports structured HTML and JSON reports."
+title: 'MalMon'
+description: 'A Windows-focused dynamic malware analysis and triage tool that monitors process trees, command lines, network connections, registry activity, and file I/O, then exports structured HTML and JSON reports.'
 date: 2026-02-17
-category: "Malware Analysis"
+category: 'Malware Analysis'
 tags:
   - Malware Analysis
-cover: "/images/tools/malmon/0.png"
+cover: '/images/tools/malmon/0.png'
 toc: true
 ---
 

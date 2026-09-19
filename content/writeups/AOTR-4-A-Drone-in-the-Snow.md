@@ -1,13 +1,12 @@
 ---
-title: "AoTR 4: A Drone in the Snow"
+title: 'AoTR 4: A Drone in the Snow'
 date: 2026-01-10 00:00:00
 category: HackTheBox
-tags: [HackTheBox,Drone_Forensics]
+tags: [HackTheBox, Drone_Forensics]
 cover: /images/write-up/AOTR-4-A-Drone-in-the-Snow/0.jpg
 description: "A recovered disk blew the case open. The files inside weren't theory, they were a checklist. Hours later, an unmarked matte-black drone was found half-buried in snow in Budapest,"
 toc: true
 ---
-
 
 # Scenario
 
@@ -19,33 +18,34 @@ A recovered disk blew the case open. The files inside weren't theory, they were 
 The scenario portrayed in this challenge is entirely fictional and created solely for educational and entertainment purposes. Any resemblance to actual persons, living or dead, organizations, or real events is purely coincidental and unintentional. All characters, scenarios, and data presented are products of imagination.
 
 ## Tools
+
 - [qGroundControl](https://github.com/mavlink/qgroundcontrol/releases)
 - [mavlogdump.py](https://github.com/ArduPilot/pymavlink/blob/master/tools/mavlogdump.py)
 
 ## lab files:
 
-- AOTR_Winter_Blackout.plan 
+- AOTR_Winter_Blackout.plan
   This file contains the drone’s settings and flight path, and which command are executed during the flight
-- log.bin 
+- log.bin
   This file contains the events that actually occurred during the drone’s flight.
 
 ## Task 1
+
 #### How many total mission items are defined in the flight plan, including Home, Takeoff, and Land commands?
 
-open file `.plan` in `qGroundControl` 
+open file `.plan` in `qGroundControl`
 
 ![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/1.png)
 ![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/2.png)
 ![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/3.png)
 
-### ✅ Answer: 49 
-
+### ✅ Answer: 49
 
 ## Task 2
 
 #### How many spline waypoints are in the mission?
 
-### ✅ Answer: 46 
+### ✅ Answer: 46
 
 ## Task 3
 
@@ -53,7 +53,7 @@ open file `.plan` in `qGroundControl`
 
 ![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/4.png)
 
-### ✅ Answer: Citadella 
+### ✅ Answer: Citadella
 
 ## Task 4
 
@@ -61,14 +61,13 @@ open file `.plan` in `qGroundControl`
 
 ![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/5.png)
 
-### ✅ Answer: 18 
+### ✅ Answer: 18
 
 ## Task 5
 
 #### How long was the planned hold time at that mission item (seconds)?
 
-### ✅ Answer: 30 
-
+### ✅ Answer: 30
 
 ## Task 6
 
@@ -76,7 +75,7 @@ open file `.plan` in `qGroundControl`
 
 ![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/6.png)
 
-### ✅ Answer: Elisabeth Bridge 
+### ✅ Answer: Elisabeth Bridge
 
 ## Task 7
 
@@ -149,8 +148,8 @@ DU32
 
 ```
 
-```bash 
-$ python3 mavlogdump.py --type MSG log.bin 
+```bash
+$ python3 mavlogdump.py --type MSG log.bin
 
 2026-01-05 22:16:07.13: MSG {TimeUS : 23319002, Message : Frame: QUAD/X}
 2026-01-05 22:16:07.13: MSG {TimeUS : 23319002, Message : GPS 1: detected as u-blox at 230400 baud}
@@ -170,21 +169,20 @@ $ python3 mavlogdump.py --type MSG log.bin
 
 ```
 
-
-start time: 48893768 
+start time: 48893768
 hit time: 687813098
 
-flight time = hit time - start time / 1000000 
+flight time = hit time - start time / 1000000
 
-### ✅ Answer: 00:10:38.919 
+### ✅ Answer: 00:10:38.919
 
-## Task 8 
+## Task 8
 
 #### What is the exact log timestamp of the crash event (TimeUS)?
 
-### ✅ Answer: 687813098 
+### ✅ Answer: 687813098
 
-## Task 9 
+## Task 9
 
 #### What are the coordinates where the drone crashed (lat, lon)?
 
@@ -194,8 +192,7 @@ $ python3 mavlogdump.py  log.bin | grep -B30 687813098 | grep Lat
 
 ```
 
-
-### ✅ Answer: 47.4903055, 19.0460476 
+### ✅ Answer: 47.4903055, 19.0460476
 
 ## Task 10
 
@@ -206,39 +203,36 @@ $ python3 mavlogdump.py  log.bin | grep -B30 687813098 | grep Lat
 
 ```
 
-### ✅ Answer: 12.93254 
+### ✅ Answer: 12.93254
 
 ## Task 11
 
 #### What was the maximum GPS altitude reached during the flight (meters)?
 
-
-
 ```bash
-$ python3 mavlogdump.py --type GPS log.bin | cut -d',' -f10| sort |tail -1 
+$ python3 mavlogdump.py --type GPS log.bin | cut -d',' -f10| sort |tail -1
  Alt : 377.07
 
 ```
-### ✅ Answer: 377.07  
 
+### ✅ Answer: 377.07
 
- ## Task 12
+## Task 12
 
- #### What was the fastest GPS ground speed recorded (m/s)?
+#### What was the fastest GPS ground speed recorded (m/s)?
 
 ```bash
-$ python3 mavlogdump.py --type GPS log.bin | cut -d':' -f15| sort -n |tail -1 
- 10.24000072479248, GCrs 
+$ python3 mavlogdump.py --type GPS log.bin | cut -d':' -f15| sort -n |tail -1
+ 10.24000072479248, GCrs
 
 
 ```
 
-### ✅ Answer: 10.24  
+### ✅ Answer: 10.24
 
 ## Task 13
 
 #### What are the coordinates where the drone took off from (lat, lon), and therefore a good location for the police raid to catch the gang member?
-
 
 ```bash
 
@@ -246,6 +240,7 @@ $ python3 mavlogdump.py --type GPS log.bin | cut -d':' -f15| sort -n |tail -1
 47.4819399, 19.01916
 
 ```
-### ✅ Answer: 47.4819399, 19.0191600  
+
+### ✅ Answer: 47.4819399, 19.0191600
 
 # Thanks For Reading

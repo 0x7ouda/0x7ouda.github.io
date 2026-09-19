@@ -13,6 +13,7 @@ interface Props {
 
 const { post, featured = false, heading: Heading = 'h3' } = Astro.props;
 ---
+
 <article
   class:list={['post-card', { 'featured-card': featured }]}
   data-post-card
