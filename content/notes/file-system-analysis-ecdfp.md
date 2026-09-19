@@ -116,7 +116,6 @@ boot sector for FAT32
 
 ### examble:
 
-[Go to image 1](#image-1)
 ![Image](/images/notes/file-system-analysis-ecdfp/11.png)
 
 You can determine what each byte means from the following table

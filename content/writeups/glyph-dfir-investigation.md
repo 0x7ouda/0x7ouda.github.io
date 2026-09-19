@@ -10,7 +10,7 @@ cover: '/images/write-up/glyph-dfir-investigation/0.png'
 toc: true
 ---
 
-# Glyph — DFIR Investigation Lab | CAT Reloaded CTF 2026
+## Glyph — DFIR Investigation Lab | CAT Reloaded CTF 2026
 
 ## Lab Description:
 
