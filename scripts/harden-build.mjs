@@ -42,12 +42,12 @@ for (const file of pages) {
     "base-uri 'self'",
     "object-src 'none'",
     "form-action 'self'",
-    `script-src 'self' 'wasm-unsafe-eval' https://giscus.app https://challenges.cloudflare.com ${[...new Set(hashes)].join(' ')}`,
+    `script-src 'self' 'wasm-unsafe-eval' https://giscus.app ${[...new Set(hashes)].join(' ')}`,
     "style-src 'self' 'unsafe-inline'",
     "font-src 'self'",
     "img-src 'self' data:",
-    `connect-src 'self' https://challenges.cloudflare.com ${workerOrigin}`.trim(),
-    'frame-src https://giscus.app https://challenges.cloudflare.com',
+    "connect-src 'self' https://giscus.app",
+    'frame-src https://giscus.app',
   ].join('; ');
   html = html.replace(
     '<head>',

@@ -1,11 +1,18 @@
 ---
 import { path } from '../lib/site';
 
-const { posts = [] } = Astro.props;
+type TagPost = {
+  collection: string;
+  data: {
+    tags?: string[];
+  };
+};
 
-const writeups = posts.filter(
-  (post: any) => post.collection === 'writeups'
-);
+const { posts = [] } = Astro.props as {
+  posts?: TagPost[];
+};
+
+const writeups = posts.filter((post) => post.collection === 'writeups');
 
 const tagCounts = new Map<string, number>();
 
@@ -20,61 +27,59 @@ for (const post of writeups) {
 }
 
 const tags = [...tagCounts.entries()].sort(
-  (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
+  (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
 );
 ---
 
-{
-  tags.length > 0 && (
-    <section class="tag-rail" aria-label="Explore writeups by tag">
-      <div class="tag-rail-inner container">
-        <div class="tag-rail-heading">
-          <span># EXPLORE BY TAG</span>
+{tags.length > 0 && (
+  <section class="tag-rail" aria-label="Explore writeups by tag">
+    <div class="tag-rail-inner container">
+      <div class="tag-rail-heading">
+        <span># EXPLORE BY TAG</span>
 
-          <button
-            class="tag-rail-toggle"
-            type="button"
-            aria-label="Pause tag movement"
-            aria-pressed="false"
-          >
-            II
-          </button>
-        </div>
+        <button
+          class="tag-rail-toggle"
+          type="button"
+          aria-label="Pause tag movement"
+          aria-pressed="false"
+        >
+          II
+        </button>
+      </div>
 
-        <div class="tag-rail-viewport">
-          <div class="tag-rail-track">
-            <div class="tag-rail-group">
-              {tags.map(([tag, count]) => (
-                <a
-                  class="tag-rail-chip"
-                  href={`${path('writeups/')}?tag=${encodeURIComponent(tag)}`}
-                >
-                  <span class="tag-hash">#</span>
-                  <span>{tag}</span>
-                  <sup>{count}</sup>
-                </a>
-              ))}
-            </div>
+      <div class="tag-rail-viewport">
+        <div class="tag-rail-track">
+          <div class="tag-rail-group">
+            {tags.map(([tag, count]) => (
+              <a
+                class="tag-rail-chip"
+                href={`${path('writeups/')}?tag=${encodeURIComponent(tag)}`}
+              >
+                <span class="tag-hash">#</span>
+                <span>{tag}</span>
+                <sup>{count}</sup>
+              </a>
+            ))}
+          </div>
 
-            <div class="tag-rail-group" aria-hidden="true">
-              {tags.map(([tag, count]) => (
-                <a
-                  class="tag-rail-chip"
-                  href={`${path('writeups/')}?tag=${encodeURIComponent(tag)}`}
-                  tabindex="-1"
-                >
-                  <span class="tag-hash">#</span>
-                  <span>{tag}</span>
-                  <sup>{count}</sup>
-                </a>
-              ))}
-            </div>
+          <div class="tag-rail-group" aria-hidden="true">
+            {tags.map(([tag, count]) => (
+              <a
+                class="tag-rail-chip"
+                href={`${path('writeups/')}?tag=${encodeURIComponent(tag)}`}
+                tabindex="-1"
+              >
+                <span class="tag-hash">#</span>
+                <span>{tag}</span>
+                <sup>{count}</sup>
+              </a>
+            ))}
           </div>
         </div>
       </div>
-    </section>
-  )
-}
+    </div>
+  </section>
+)}
 
 <script>
   document.querySelectorAll('.tag-rail').forEach((rail) => {
@@ -239,7 +244,7 @@ const tags = [...tagCounts.entries()].sort(
     }
   }
 
- @media (max-width: 600px) {
+  @media (max-width: 600px) {
     .tag-rail {
       padding-top: 8px;
     }
