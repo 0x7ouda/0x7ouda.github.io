@@ -1,0 +1,66 @@
+---
+import Icon from './Icon.astro';
+import { path } from '../lib/site';
+import '../styles/command-search.css';
+---
+
+<section
+  class="command-search container"
+  id="command-search"
+  data-command-search
+  data-base={path()}
+  aria-label="Search the research archive"
+>
+  <form class="command-bar" role="search" autocomplete="off">
+    <label class="command-field">
+      <span class="command-symbol" aria-hidden="true">
+        <Icon name="terminal" size={22} />
+      </span>
+      <input
+        id="command-input"
+        type="search"
+        name="query"
+        placeholder="type a command... (cd, / )"
+        aria-label="Search research or enter a command"
+        spellcheck="false"
+        aria-controls="command-output"
+      />
+      <span class="command-placeholder" aria-hidden="true">
+        <span class="command-typed">type a command... (cd, / )</span>
+        <span class="command-cursor"></span>
+      </span>
+    </label>
+  </form>
+  <div class="command-output" id="command-output" hidden>
+    <div class="command-output-heading">
+      <p class="search-status" role="status" aria-live="polite"></p>
+      <button type="button" data-clear-command>
+        Clear
+      </button>
+    </div>
+    <div class="search-filters" aria-label="Search content type">
+      {[
+        'Everything',
+        'Research',
+        'Writeups',
+        'Notes',
+        'Artifacts',
+        'Tools',
+      ].map((label, index) => (
+        <button
+          type="button"
+          data-search-type={
+            ['', 'Research', 'Writeup', 'Note', 'Artifact', 'Tool'][index]
+          }
+          aria-pressed={index === 0 ? 'true' : 'false'}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</section>
+<script>
+  import '../scripts/command-search';
+</script>

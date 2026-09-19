@@ -1,0 +1,124 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site, path } from '../lib/site';
+---
+
+<Base
+  title="About — 0x7ouda"
+  description="Mahmoud Yaqout — Junior SOC Analyst focused on DFIR, threat hunting, incident response, and malware analysis."
+>
+  <section class="container about-profile-page">
+
+    <div class="about-profile-photo">
+      <img
+        src={path('images/profile.png')}
+        alt="Mahmoud Yaqout"
+        loading="eager"
+      />
+    </div>
+
+    <div class="about-profile-heading">
+      <h1>Mahmoud Yaqout</h1>
+
+      <div class="about-profile-meta">
+        <span>@0x7ouda</span>
+        <span class="about-meta-dot"></span>
+        <span>Junior SOC Analyst</span>
+      </div>
+    </div>
+
+    <div class="about-profile-bio">
+      <p>
+        I’m Mahmoud Yaqout, a Junior SOC Analyst working across threat hunting,
+        incident response, digital forensics, and malware analysis. I’m
+        interested in understanding how attacks unfold, what evidence they leave
+        behind, and how that evidence can be turned into useful detections and
+        investigations.
+      </p>
+
+      <p>
+        Most of my experience comes from hands-on blue-team labs, security
+        projects, CTFs, and building tools around SOC and malware analysis.
+        I’ve worked with Splunk, ELK, network analysis, endpoint investigation,
+        IOC enrichment, and incident-response workflows.
+      </p>
+
+      <p>
+        I play CTFs with <strong>Pwnd0k</strong>, mainly focusing on DFIR and
+        blue-team-oriented challenges. <strong>0x7ouda</strong> is where I
+        document my research, investigations, tools, writeups, and the things I
+        learn along the way.
+      </p>
+    </div>
+
+    <div class="about-focus-grid">
+      <div class="about-focus-card">
+        <Icon name="search" size={19} />
+        <span>DFIR</span>
+      </div>
+
+      <div class="about-focus-card">
+        <Icon name="monitor" size={19} />
+        <span>SOC Analysis</span>
+      </div>
+
+      <div class="about-focus-card">
+        <Icon name="search" size={19} />
+        <span>Threat Hunting</span>
+      </div>
+
+      <div class="about-focus-card">
+        <Icon name="bug" size={19} />
+        <span>Malware Analysis</span>
+      </div>
+    </div>
+
+
+    <section class="about-profile-connect" id="connect">
+      <span class="eyebrow">LET'S CONNECT</span>
+
+      <div class="about-connect">
+        <a
+          class="button button-secondary"
+          href={site.github}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Icon name="github" size={17} />
+          GitHub
+        </a>
+
+        {import.meta.env.PUBLIC_DISCORD_URL && (
+          <a
+            class="button button-secondary"
+            href={site.discord}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Icon name="discord" size={17} />
+            Discord
+          </a>
+        )}
+
+        {import.meta.env.PUBLIC_LINKEDIN_URL && (
+          <a
+            class="button button-secondary"
+            href={site.linkedin}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Icon name="linkedin" size={17} />
+            LinkedIn
+          </a>
+        )}
+
+        <a class="button button-secondary" href={path('rss.xml')}>
+          <Icon name="rss" size={17} />
+          RSS feed
+        </a>
+      </div>
+    </section>
+
+  </section>
+</Base>

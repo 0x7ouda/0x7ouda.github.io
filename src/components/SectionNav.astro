@@ -1,0 +1,30 @@
+---
+import Icon from './Icon.astro';
+import { navigation, path } from '../lib/site';
+const current =
+  Astro.url.pathname
+    .replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '')
+    .split('/')[1] || '';
+
+const icons: Record<string, string> = {
+  Home: 'home',
+  Research: 'search',
+  Writeups: 'file',
+  Notes: 'bookmark',
+  Tools: 'terminal',
+  About: 'info',
+};
+---
+
+<nav class="section-nav container" aria-label="Main navigation">
+  {navigation.map(([label, slug]) => (
+    <a
+      class="section-tab"
+      href={path(slug)}
+      aria-current={current === slug.replace('/', '') ? 'page' : undefined}
+    >
+      <Icon name={icons[label]!} size={17} />
+      <span>{label}</span>
+    </a>
+  ))}
+</nav>

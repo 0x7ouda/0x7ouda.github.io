@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+
+const discordUrl = import.meta.env.PUBLIC_DISCORD_URL;
+---
+
+<section
+  class="discussion-section"
+  id="discussion"
+  aria-labelledby="discussion-title"
+  data-pagefind-ignore
+>
+  <div class="discussion-visual">
+    <div class="discussion-icon" aria-hidden="true">
+      <Icon name="discord" size={32} />
+    </div>
+
+    <div class="discussion-content">
+      <span class="discussion-eyebrow">LET'S DISCUSS</span>
+
+      <h2 id="discussion-title">
+        Keep the investigation open.
+      </h2>
+
+      <p>
+        Have another interpretation, a correction, or a useful trace?
+        Reach out on Discord.
+      </p>
+
+      <a
+        class="discord-button"
+        href={discordUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Continue on Discord
+        <Icon name="diagonal" size={16} />
+      </a>
+    </div>
+
+    <div class="discussion-rings" aria-hidden="true"></div>
+  </div>
+</section>

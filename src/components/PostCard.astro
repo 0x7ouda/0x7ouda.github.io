@@ -1,0 +1,65 @@
+---
+import ArticleCover from './ArticleCover.astro';
+import '../styles/publication-cards.css';
+import Icon from './Icon.astro';
+import { postUrl, readingTime, type Post } from '../lib/content';
+import { formatDate } from '../lib/site';
+
+interface Props {
+  post: Post;
+  featured?: boolean;
+  heading?: 'h2' | 'h3';
+}
+
+const { post, featured = false, heading: Heading = 'h3' } = Astro.props;
+---
+<article
+  class:list={['post-card', { 'featured-card': featured }]}
+  data-post-card
+  data-tags={(post.data.tags ?? [])
+    .map((tag) => String(tag).trim().toLowerCase())
+    .join('|||')}
+>
+  <div class="card-cover">
+    <a
+      class="card-image-link"
+      href={postUrl(post)}
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <ArticleCover src={post.data.cover} />
+    </a>
+    <div class="card-cover-meta">
+      <span>{post.data.category}</span>
+      <time datetime={post.data.date.toISOString()}>
+        {formatDate(post.data.date)}
+      </time>
+    </div>
+  </div>
+  <div class="post-card-body">
+    <div class="card-kicker">
+      <span class:list={['type-label', `type-${post.data.type.toLowerCase()}`]}>
+        {post.data.type === 'Writeup' ? 'Case writeup' : post.data.type}
+      </span>
+      {featured && <span class="featured-label">Editor’s pick</span>}
+    </div>
+    <Heading class="post-card-title">
+      <a href={postUrl(post)}>
+        {post.data.title}
+        <Icon name="diagonal" size={21} />
+      </a>
+    </Heading>
+    <p>{post.data.description}</p>
+    <div class="card-tags">
+      {post.data.tags.slice(0, 3).map((tag) => (
+        <span>{tag}</span>
+      ))}
+    </div>
+    <div class="card-meta">
+      <span>{readingTime(post.body)} min read</span>
+      {post.data.complexity && (
+        <span class="complexity">{post.data.complexity}</span>
+      )}
+    </div>
+  </div>
+</article>

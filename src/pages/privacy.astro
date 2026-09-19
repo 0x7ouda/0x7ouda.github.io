@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../lib/site';
+---
+
+<Base
+  title="Privacy — 0x7ouda"
+  description="How the research lab handles search, browser storage, external services, and privacy."
+>
+  <section class="container page-intro">
+    <span class="eyebrow">THE SHORT VERSION</span>
+
+    <h1>
+      Your reading is <em>yours.</em>
+    </h1>
+
+    <p>
+      No advertising pixels or behavioral analytics. Search runs in your
+      browser.
+    </p>
+  </section>
+
+  <div class="container prose-page article-prose">
+    <h2>Reading and search</h2>
+
+    <p>
+      The website is served through GitHub Pages. Hosting providers may process
+      request metadata as part of delivering and securing the site. Search
+      queries are processed locally after downloading the search index; they are
+      not sent to a search service.
+    </p>
+
+    <h2>Browser storage</h2>
+
+    <p>
+      A session flag may be stored in your browser to prevent the opening
+      animation from repeating during the same session. This does not create an
+      account or synchronize your reading activity. You can clear site data
+      through your browser controls.
+    </p>
+
+    <h2>External services</h2>
+
+    <p>
+      Some links may take you to external services such as GitHub or Discord.
+      Those services operate independently and are subject to their own privacy
+      practices. The research lab does not receive your account credentials from
+      those services.
+    </p>
+
+    <h2>Questions or privacy requests</h2>
+
+    <p>
+      Contact the lab through <a href={site.github}>the GitHub profile</a>. Do
+      not post private addresses, credentials, personal information, or
+      sensitive incident evidence in a public discussion.
+    </p>
+  </div>
+</Base>

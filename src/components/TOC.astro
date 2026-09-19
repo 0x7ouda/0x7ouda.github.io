@@ -1,0 +1,32 @@
+---
+import type { MarkdownHeading } from 'astro';
+interface Props {
+  headings: MarkdownHeading[];
+  mobile?: boolean;
+}
+const { headings, mobile = false } = Astro.props;
+const entries = headings.filter(
+  (heading) => heading.depth === 2 || heading.depth === 3,
+);
+---
+
+{mobile ? (
+  <details class="mobile-toc" data-pagefind-ignore>
+    <summary>ON THIS PAGE / {entries.length} SECTIONS</summary>
+    <ol>
+      {entries.map((heading) => (
+        <li>
+          <a href={`#${heading.slug}`}>{heading.text}</a>
+        </li>
+      ))}
+    </ol>
+  </details>
+) : (
+  <ol>
+    {entries.map((heading) => (
+      <li class={`depth-${heading.depth}`}>
+        <a href={`#${heading.slug}`}>{heading.text}</a>
+      </li>
+    ))}
+  </ol>
+)}

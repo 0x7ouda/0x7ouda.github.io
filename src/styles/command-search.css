@@ -1,0 +1,226 @@
+@layer components {
+  .command-search {
+    padding-top: 10px;
+    scroll-margin-top: 24px;
+  }
+  .archive-controls {
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .command-bar {
+    border: 1px solid #70885b66;
+    background: #111911cb;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 10px;
+    box-shadow:
+      0 10px 32px #0002,
+      inset 0 1px 0 #d5edc009;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  .command-bar:focus-within {
+    border-color: #a8c98b;
+    box-shadow:
+      0 0 0 3px #a8c98b0b,
+      0 12px 40px #0003;
+  }
+  .command-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-height: 76px;
+    padding: 0 24px;
+    cursor: text;
+  }
+  .command-symbol {
+    color: var(--green);
+    flex: 0 0 22px;
+  }
+  .command-field input {
+    width: 100%;
+    min-width: 0;
+    padding: 25px 0;
+    border: 0;
+    background: transparent;
+    font: 14px/1.8 var(--mono);
+    outline: none;
+    color: var(--text);
+    caret-color: var(--green);
+  }
+  .command-field input::placeholder {
+    color: transparent;
+  }
+  .command-field input:focus::placeholder {
+    color: var(--faint);
+  }
+  .command-field input:focus-visible {
+    outline: none;
+  }
+  .command-placeholder {
+    position: absolute;
+    left: 64px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    pointer-events: none;
+    font: 14px/1.8 var(--mono);
+    color: #bac7af;
+  }
+  .command-typed {
+    display: block;
+    width: 27ch;
+    white-space: pre;
+    overflow: hidden;
+    animation: command-type 10s steps(27, end) infinite;
+  }
+  .command-cursor {
+    position: absolute;
+    left: 0;
+    width: 7px;
+    height: 16px;
+    margin-left: 2px;
+    background: var(--green);
+    transform: translateX(27ch);
+    animation:
+      command-caret 10s steps(27, end) infinite,
+      blink 1.3s steps(1) infinite;
+  }
+  .command-field input:focus ~ .command-placeholder,
+  .command-field input:not(:placeholder-shown) ~ .command-placeholder {
+    display: none;
+  }
+  .command-output {
+    margin-top: 14px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #131a13f5;
+  }
+  .command-output-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .search-status {
+    font: 11px/1.8 var(--mono);
+    color: var(--muted);
+  }
+  .command-output-heading button {
+    color: var(--green);
+    font-size: 11px;
+    padding: 8px 12px;
+  }
+  .search-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-block: 15px;
+  }
+  .search-filters button {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .search-filters button[aria-pressed='true'] {
+    color: var(--green);
+    border-color: #627c4d;
+    background: #b0d3940b;
+  }
+  .search-results {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .search-result {
+    display: grid;
+    gap: 5px;
+    padding: 19px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #19201888;
+  }
+  .search-result:hover,
+  .search-result:focus {
+    background: var(--elevated);
+    border-color: var(--border-strong);
+  }
+  .result-type {
+    font: 9px var(--mono);
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .result-title {
+    font-size: 16px;
+    color: var(--text);
+  }
+  .result-excerpt {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  @keyframes command-type {
+    0%,
+    8%,
+    100% {
+      clip-path: inset(0 100% 0 0);
+    }
+    34%,
+    76% {
+      clip-path: inset(0 0 0 0);
+    }
+    92% {
+      clip-path: inset(0 100% 0 0);
+    }
+  }
+  @keyframes command-caret {
+    0%,
+    8%,
+    100%,
+    92% {
+      transform: translateX(0);
+    }
+    34%,
+    76% {
+      transform: translateX(27ch);
+    }
+  }
+}
+@layer responsive {
+  @media (max-width: 600px) {
+    .command-field {
+      padding-inline: 16px;
+      min-height: 68px;
+      gap: 12px;
+    }
+    .command-field input,
+    .command-placeholder {
+      font-size: 11px;
+    }
+    .command-placeholder {
+      left: 50px;
+    }
+    .command-output {
+      padding: 14px;
+    }
+    .search-results {
+      grid-template-columns: 1fr;
+    }
+    .search-filters button {
+      padding: 7px 10px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .command-typed {
+      width: 27ch;
+      animation: none;
+    }
+  }
+}

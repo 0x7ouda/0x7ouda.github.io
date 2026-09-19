@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { path } from '../lib/site';
+---
+
+<Base title="Trace not found — 0x7ouda" noindex>
+  <section class="container not-found">
+    <span class="eyebrow">404 / A MISSING PIECE</span>
+    <h1>
+      This trace
+      <br />
+      <em>leads elsewhere.</em>
+    </h1>
+    <p>
+      The page may have moved, or the link is incomplete. The index is a good
+      place to pick up the trail.
+    </p>
+    <div class="about-connect">
+      <button class="button button-primary" data-focus-search>
+        <Icon name="search" size={17} />
+        Search the index
+      </button>
+      <a class="button button-secondary" href={path()}>
+        Back to the lab <Icon name="arrow" size={16} />
+      </a>
+    </div>
+  </section>
+</Base>

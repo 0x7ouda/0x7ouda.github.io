@@ -1,0 +1,47 @@
+---
+import Icon from './Icon.astro';
+import { path, site } from '../lib/site';
+---
+
+<header class="site-header" data-pagefind-ignore>
+  <div class="identity-row container">
+    <div class="identity-group">
+      <a class="brand" href={path()} aria-label="0x7ouda, home">
+        <span class="prompt-mark">&gt;</span>
+        <span class="brand-handle">
+          0x7ouda
+          <span class="brand-typed" aria-hidden="true">
+            0x7ouda
+          </span>
+        </span>
+        <span class="cursor" aria-hidden="true"></span>
+      </a>
+      <span class="identity-divider" aria-hidden="true"></span>
+      <div class="social-links">
+        <a href={site.discord} aria-label="Discord" title="Discord">
+          <Icon name="discord" size={18} />
+        </a>
+        <a href={site.linkedin} aria-label="LinkedIn" title="LinkedIn">
+          <Icon name="linkedin" size={17} />
+        </a>
+        <a href={site.github} aria-label="GitHub" title="GitHub">
+          <Icon name="github" size={18} />
+        </a>
+      </div>
+    </div>
+    <a class="header-note" href={path('about/')}>
+      <span class="whoami-label">
+        <span class="status-prompt">$</span>
+        <span> whoami_</span>
+      </span>{' '}
+      <Icon name="diagonal" size={13} />
+    </a>
+    <button
+      class="header-search icon-button"
+      data-focus-search
+      aria-label="Search research"
+    >
+      <Icon name="search" />
+    </button>
+  </div>
+</header>

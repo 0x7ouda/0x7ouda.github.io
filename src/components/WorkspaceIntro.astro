@@ -1,0 +1,65 @@
+---
+import { path } from '../lib/site';
+import '../styles/workspace-intro.css';
+---
+
+<script is:inline>
+  (() => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    try {
+      if (sessionStorage.getItem('workspace-intro-seen')) return;
+      sessionStorage.setItem('workspace-intro-seen', '1');
+    } catch {
+      /* The intro works without storage. */
+    }
+    document.documentElement.dataset.workspaceIntro = 'active';
+    setTimeout(
+      () => delete document.documentElement.dataset.workspaceIntro,
+      2400,
+    );
+  })();
+</script>
+<div
+  class="workspace-intro"
+  data-workspace-intro-panel
+  aria-label="Opening the research workspace"
+  role="region"
+>
+  <img
+    class="workspace-backdrop"
+    src={path('images/forensic-lab-hero.webp')}
+    width="1536"
+    height="864"
+    alt=""
+  />
+  <div class="workspace-particles" aria-hidden="true">
+    {Array.from({ length: 6 }, () => (
+      <i></i>
+    ))}
+  </div>
+  <button class="intro-skip" type="button" data-skip-intro>
+    Skip introduction <span aria-hidden="true">↗</span>
+  </button>
+  <div class="workspace-console">
+    <span class="intro-eyebrow">INDEPENDENT RESEARCH LAB</span>
+    <div class="intro-brand" aria-label="0x7ouda">
+      <span aria-hidden="true">&gt;</span> 0x7ouda
+      <span class="intro-cursor" aria-hidden="true">
+        _
+      </span>
+    </div>
+    <div class="intro-progress-label">
+      <span data-intro-stage>Initializing workspace...</span>
+      <span data-intro-percent aria-hidden="true">
+        0
+      </span>
+    </div>
+    <div class="intro-progress-track" aria-hidden="true">
+      <span data-intro-progress></span>
+    </div>
+    <span class="intro-footnote">DIGITAL FORENSICS / RESEARCH ARCHIVE</span>
+  </div>
+</div>
+<script>
+  import '../scripts/intro';
+</script>

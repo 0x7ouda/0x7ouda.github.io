@@ -1,0 +1,300 @@
+---
+import { path } from '../lib/site';
+
+const { posts = [] } = Astro.props;
+
+const writeups = posts.filter(
+  (post: any) => post.collection === 'writeups'
+);
+
+const tagCounts = new Map<string, number>();
+
+for (const post of writeups) {
+  for (const rawTag of post.data.tags ?? []) {
+    const tag = String(rawTag).trim();
+
+    if (!tag) continue;
+
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+  }
+}
+
+const tags = [...tagCounts.entries()].sort(
+  (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
+);
+---
+
+{
+  tags.length > 0 && (
+    <section class="tag-rail" aria-label="Explore writeups by tag">
+      <div class="tag-rail-inner container">
+        <div class="tag-rail-heading">
+          <span># EXPLORE BY TAG</span>
+
+          <button
+            class="tag-rail-toggle"
+            type="button"
+            aria-label="Pause tag movement"
+            aria-pressed="false"
+          >
+            II
+          </button>
+        </div>
+
+        <div class="tag-rail-viewport">
+          <div class="tag-rail-track">
+            <div class="tag-rail-group">
+              {tags.map(([tag, count]) => (
+                <a
+                  class="tag-rail-chip"
+                  href={`${path('writeups/')}?tag=${encodeURIComponent(tag)}`}
+                >
+                  <span class="tag-hash">#</span>
+                  <span>{tag}</span>
+                  <sup>{count}</sup>
+                </a>
+              ))}
+            </div>
+
+            <div class="tag-rail-group" aria-hidden="true">
+              {tags.map(([tag, count]) => (
+                <a
+                  class="tag-rail-chip"
+                  href={`${path('writeups/')}?tag=${encodeURIComponent(tag)}`}
+                  tabindex="-1"
+                >
+                  <span class="tag-hash">#</span>
+                  <span>{tag}</span>
+                  <sup>{count}</sup>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  document.querySelectorAll('.tag-rail').forEach((rail) => {
+    const button = rail.querySelector<HTMLButtonElement>('.tag-rail-toggle');
+    const track = rail.querySelector<HTMLElement>('.tag-rail-track');
+
+    if (!button || !track) return;
+
+    button.addEventListener('click', () => {
+      const paused = track.classList.toggle('is-paused');
+
+      button.setAttribute('aria-pressed', String(paused));
+      button.setAttribute(
+        'aria-label',
+        paused ? 'Resume tag movement' : 'Pause tag movement',
+      );
+
+      button.textContent = paused ? '▶' : 'II';
+    });
+  });
+</script>
+
+<style>
+  .tag-rail {
+    position: relative;
+    padding: 10px 0 22px;
+  }
+
+  .tag-rail-inner {
+    min-width: 0;
+
+    width: min(860px, calc(100% - 96px));
+    margin-inline: auto;
+  }
+
+  .tag-rail-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 9px;
+  }
+
+  .tag-rail-heading > span {
+    color: var(--faint);
+    font: 10px/1.4 var(--mono);
+    letter-spacing: 0.14em;
+  }
+
+  .tag-rail-toggle {
+    display: grid;
+    place-items: center;
+    width: 27px;
+    height: 27px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--faint);
+    font: 8px var(--mono);
+  }
+
+  .tag-rail-toggle:hover {
+    color: var(--green);
+    border-color: #718365;
+  }
+
+  .tag-rail-viewport {
+    position: relative;
+    overflow: hidden;
+
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 4%,
+      #000 96%,
+      transparent
+    );
+
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 4%,
+      #000 96%,
+      transparent
+    );
+  }
+
+  .tag-rail-track {
+    display: flex;
+    width: max-content;
+    animation: tag-rail-move 35s linear infinite;
+    will-change: transform;
+  }
+
+  .tag-rail-track.is-paused {
+    animation-play-state: paused;
+  }
+
+  @media (hover: hover) {
+    .tag-rail:hover .tag-rail-track {
+      animation-play-state: paused;
+    }
+  }
+
+  .tag-rail-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-right: 8px;
+  }
+
+  .tag-rail-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    min-height: 40px;
+    padding: 9px 14px;
+
+    border: 1px solid #768b682c;
+    border-radius: 7px;
+
+    background: #18201780;
+    color: #abb5a4;
+
+    font: 13px var(--mono);
+    white-space: nowrap;
+
+    transition:
+      color 0.2s,
+      border-color 0.2s,
+      background 0.2s,
+      transform 0.2s;
+  }
+
+  .tag-rail-chip:hover {
+    color: var(--text);
+    border-color: #9fc38170;
+    background: #25321f;
+    transform: translateY(-1px);
+  }
+
+  .tag-hash {
+    color: var(--green);
+  }
+
+  .tag-rail-chip sup {
+    position: relative;
+    top: -1px;
+
+    color: var(--faint);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  @keyframes tag-rail-move {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+ @media (max-width: 600px) {
+    .tag-rail {
+      padding-top: 8px;
+    }
+
+    .tag-rail-viewport {
+      overflow: hidden;
+
+      mask-image: linear-gradient(
+        90deg,
+        transparent,
+        #000 4%,
+        #000 96%,
+        transparent
+      );
+
+      -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent,
+        #000 4%,
+        #000 96%,
+        transparent
+      );
+    }
+
+    .tag-rail-track {
+      animation: tag-rail-move 35s linear infinite;
+    }
+
+    .tag-rail-group[aria-hidden='true'] {
+      display: flex;
+    }
+
+    .tag-rail-toggle {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tag-rail-track {
+      animation: none;
+    }
+
+    .tag-rail-viewport {
+      overflow-x: auto;
+
+      mask-image: none;
+      -webkit-mask-image: none;
+    }
+
+    .tag-rail-group[aria-hidden='true'] {
+      display: none;
+    }
+
+    .tag-rail-toggle {
+      display: none;
+    }
+  }
+</style>

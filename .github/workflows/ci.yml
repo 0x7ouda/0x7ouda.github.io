@@ -1,0 +1,40 @@
+name: Check publication
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run lint
+      - run: npm test
+      - run: npm audit --audit-level=high
+      - run: npm run build && npm run validate
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - name: Check configured widgets with mocked services
+        run: npm run build && node scripts/check-integrations.mjs
+        env:
+          PUBLIC_GISCUS_REPO: example/research
+          PUBLIC_GISCUS_REPO_ID: R_test
+          PUBLIC_GISCUS_CATEGORY_ID: DIC_test
+      - name: Validate a GitHub Pages project subpath
+        run: npm run build && npm run validate && node scripts/check-subpath.mjs
+        env:
+          SITE_BASE: /research-lab/
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: failure()
+        with:
+          name: browser-test-results
+          path: test-results
+          retention-days: 7

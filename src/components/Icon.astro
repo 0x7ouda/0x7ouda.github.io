@@ -1,0 +1,50 @@
+---
+interface Props {
+  name: string;
+  size?: number;
+  class?: string;
+}
+const { name, size = 20, class: className } = Astro.props;
+const icons: Record<string, string> = {
+  home: 'm3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9',
+  info: 'M12 11v6m0-10v.01m9 5a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
+  arrow: 'M5 12h14m-5-5 5 5-5 5',
+  diagonal: 'M6 18 18 6M6 6h12v12',
+  search: 'M21 21l-5.2-5.2M18 10.5a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0',
+  close: 'm6 6 12 12M6 18 18 6',
+  file: 'M14 2H5v20h14V7l-5-5Zm0 0v6h5M8 12h8m-8 4h6',
+  layers: 'm12 3 10 5-10 5L2 8l10-5Zm-10 9 10 5 10-5M2 16l10 5 10-5',
+  terminal: 'm4 6 6 6-6 6m9 0h7',
+  clock: 'M12 7v5l3 2m6-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
+  mail: 'M3 5h18v14H3V5Zm0 1 9 7 9-7',
+  rss: 'M4 4a16 16 0 0 1 16 16M4 10a10 10 0 0 1 10 10M5 19h.01',
+  github:
+    'M9 19c-4 1-4-2-6-2m12 5v-3.5c0-1 .1-1.6-.5-2.3 3-.3 6-1.5 6-6.5 0-1.4-.5-2.5-1.3-3.4.1-.4.6-1.7-.1-3.3 0 0-1-.3-3.6 1.3a12 12 0 0 0-6.5 0C6 2.7 5 3 5 3c-.7 1.6-.2 2.9-.1 3.3C4 7.2 3.5 8.3 3.5 9.7c0 5 3 6.2 6 6.5-.5.5-.7 1.2-.7 2.3V22',
+  linkedin: 'M4 9v12m0-18v.01M9 21V9h4v2c2-3 7-3 7 3v7m-7 0v-7',
+  discord:
+    'M8 5 5 6C3 9 2 13 2 17l5 2 1-2m8-12 3 1c2 3 3 7 3 11l-5 2-1-2M7 16c3 2 7 2 10 0M8 11v2m8-2v2M8 6c3-1 5-1 8 0',
+  copy: 'M9 9h12v12H9V9Zm6-3V3H3v12h3',
+  check: 'm5 12 4 4L19 6',
+  chevron: 'm8 4 8 8-8 8',
+  bookmark: 'M6 3h12v18l-6-4-6 4V3Z',
+  chat: 'M21 11a9 9 0 0 1-9 9H3l2-5a9 9 0 1 1 16-4Z',
+  pause: 'M8 5v14m8-14v14',
+  play: 'm8 5 11 7-11 7V5Z',
+  shield: 'm12 2 9 4v6c0 5-9 10-9 10S3 17 3 12V6l9-4Z',
+};
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  class={className}
+>
+  <path d={icons[name] || icons.file} />
+</svg>

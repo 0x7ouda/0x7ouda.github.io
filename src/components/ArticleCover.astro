@@ -1,0 +1,17 @@
+---
+import { path } from '../lib/site';
+interface Props {
+  src: string;
+}
+const { src } = Astro.props;
+---
+
+<img
+  class="publication-cover"
+  src={path(src)}
+  width="1200"
+  height="675"
+  alt=""
+  loading="lazy"
+  decoding="async"
+/>

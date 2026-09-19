@@ -1,0 +1,122 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/newsreader/standard-italic.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CommandSearch from '../components/CommandSearch.astro';
+import SectionNav from '../components/SectionNav.astro';
+import WorkspaceIntro from '../components/WorkspaceIntro.astro';
+import { path, site } from '../lib/site';
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: { date: Date; updated?: Date; author: string };
+  noindex?: boolean;
+  home?: boolean;
+}
+const {
+  title = site.title,
+  description = site.description,
+  image = path('og/default.png'),
+  article,
+  noindex = false,
+  home = false,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site).href;
+const schema = article
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description,
+      datePublished: article.date.toISOString(),
+      dateModified: (article.updated || article.date).toISOString(),
+      author: {
+        '@type': 'Person',
+        name: article.author,
+        url: new URL(path('about/'), Astro.site).href,
+      },
+      mainEntityOfPage: canonical.href,
+      image: imageUrl,
+      publisher: { '@type': 'Organization', name: site.name },
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: site.name,
+      url: Astro.site?.href,
+      description,
+    };
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#101310" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    {article && (
+      <meta
+        property="article:published_time"
+        content={article.date.toISOString()}
+      />
+    )}
+    <link rel="icon" href={path('favicon.svg')} type="image/svg+xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="0x7ouda research feed"
+      href={path('rss.xml')}
+    />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(schema).replace(/</g, '\\u003c')}
+    ></script>
+  </head>
+  <body>
+    <WorkspaceIntro />
+    <div class="page-shell">
+      <a class="skip-link" href="#main">
+        Skip to content
+      </a>
+      <Header />
+      <main id="main">
+        {!home && (
+          <div class="archive-controls">
+            <CommandSearch />
+            <SectionNav />
+          </div>
+        )}
+        <slot />
+      </main>
+      <Footer />
+    </div>
+    <script>
+      import '../scripts/global';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPosts } from '../../lib/content';
+export function getStaticPaths() {
+  return [
+    {
+      section: 'research',
+      title: 'Research',
+      kicker: 'THE RESEARCH ARCHIVE',
+      description:
+        'Deep dives into digital evidence, attacker behavior, and the details that change an investigation.',
+      type: 'Research',
+    },
+    {
+      section: 'writeups',
+      title: 'Case writeups',
+      kicker: 'FROM TRACE TO TIMELINE',
+      description:
+        'Investigations told through the evidence. Step by step, with the assumptions left visible.',
+      type: 'Writeup',
+    },
+    {
+      section: 'notes',
+      title: 'Field notes',
+      kicker: 'THE WORK BETWEEN THE REPORTS',
+      description:
+        'Small discoveries, useful commands, and practical observations from the forensic notebook.',
+      type: 'Note',
+    },
+    {
+      section: 'tools',
+      title: 'The toolkit',
+      kicker: 'PURPOSE BEFORE PREFERENCE',
+      description:
+        'Tools for collecting, parsing, and understanding evidence—with context for when to use them.',
+      type: 'Tool',
+    },
+  ].map(({ section, ...props }) => ({ params: { section }, props }));
+}
+const { title, kicker, description, type } = Astro.props;
+const posts = (await getPosts()).filter((post) => post.data.type === type);
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))].slice(0, 6);
+---
+
+<Base title={`${title} — 0x7ouda`} description={description}>
+  <section class="container page-intro">
+    <span class="eyebrow">
+      <span class="status-dot"></span>
+      {kicker}
+    </span>
+    <h1>
+      {title}
+      <em>.</em>
+    </h1>
+    <p>{description}</p>
+  </section>
+  <section class="container index-posts" aria-label={title}>
+    <div class="index-toolbar">
+      <div class="index-filter" aria-label="Filter by topic">
+        <button data-index-filter="" aria-pressed="true">
+          All entries
+        </button>
+        {tags.map((tag) => (
+          <button data-index-filter={tag} aria-pressed="false">
+            {tag}
+          </button>
+        ))}
+      </div>
+      <span class="index-count" data-index-count role="status">
+        {posts.length} {posts.length === 1 ? 'entry' : 'entries'}
+      </span>
+    </div>
+    <div class="post-grid">
+      {posts.map((post) => (
+        <div data-filter-tags={JSON.stringify(post.data.tags)}>
+          <PostCard post={post} heading="h2" />
+        </div>
+      ))}
+    </div>
+    {!posts.length && (
+      <p class="empty-state">
+        The next investigation is taking shape. Explore the artifact index in
+        the meantime.
+      </p>
+    )}
+  </section>
+</Base>

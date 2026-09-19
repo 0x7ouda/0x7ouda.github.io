@@ -1,0 +1,28 @@
+---
+import Icon from './Icon.astro';
+import { path, site } from '../lib/site';
+---
+
+<footer class="site-footer container" data-pagefind-ignore>
+  <div>
+    <a class="footer-brand" href={path()}>
+      0x7ouda<span>_</span>
+    </a>
+    <p>Every trace tells a story.</p>
+  </div>
+  <div class="footer-links">
+    <a href={path('about/')}>About the lab</a>
+    <a href={path('privacy/')}>Privacy</a>
+    <a href={path('rss.xml')}>
+      RSS <Icon name="rss" size={13} />
+    </a>
+    <a href={site.github}>
+      GitHub <Icon name="diagonal" size={13} />
+    </a>
+  </div>
+  <p class="footer-colophon">
+    Independent research. Open knowledge.
+    <br />
+    <span>© {new Date().getUTCFullYear()} 0x7ouda</span>
+  </p>
+</footer>

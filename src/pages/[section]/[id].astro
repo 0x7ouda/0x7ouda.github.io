@@ -1,0 +1,182 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import TOC from '../../components/TOC.astro';
+import ArticleCover from '../../components/ArticleCover.astro';
+import PostCard from '../../components/PostCard.astro';
+import Comments from '../../components/Comments.astro';
+import Icon from '../../components/Icon.astro';
+import {
+  getPosts,
+  postUrl,
+  readingTime,
+  relatedPosts,
+  type Post,
+} from '../../lib/content';
+import { path, formatDate } from '../../lib/site';
+export async function getStaticPaths() {
+  return (await getPosts()).map((post) => ({
+    params: {
+      section: {
+        Research: 'research',
+        Writeup: 'writeups',
+        Note: 'notes',
+        Tool: 'tools',
+      }[post.data.type],
+      id: post.id,
+    },
+    props: { post },
+  }));
+}
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const section = Astro.params.section!;
+const related = relatedPosts(post, await getPosts());
+---
+
+<Base
+  title={`${post.data.title} — 0x7ouda`}
+  description={post.data.description}
+  image={path(`og/${post.id}.png`)}
+  article={post.data}
+>
+  <div class="reading-progress" aria-hidden="true"></div>
+  <article class="container" data-pagefind-body>
+    <div class="breadcrumbs" data-pagefind-ignore>
+      <a href={path()}>The lab</a>
+      <span>/</span>
+      <a href={path(`${section}/`)}>
+        {post.data.type === 'Note'
+          ? 'Notes'
+          : post.data.type === 'Tool'
+            ? 'Tools'
+            : post.data.type}
+      </a>
+      <span>/</span>
+      <span>Research file</span>
+    </div>
+    <header class="article-heading">
+      <div class="card-kicker">
+        <span
+          class={`type-label type-${post.data.type.toLowerCase()}`}
+          data-pagefind-filter="type"
+          data-pagefind-meta="type"
+        >
+          {post.data.type}
+        </span>
+        <span>/</span>
+        <span data-pagefind-filter="category">{post.data.category}</span>
+        {post.data.complexity && (
+          <>
+            <span>/</span>
+            <span>{post.data.complexity}</span>
+          </>
+        )}
+      </div>
+      <h1 data-pagefind-meta="title">{post.data.title}</h1>
+      <p class="article-dek" data-pagefind-meta="description">
+        {post.data.description}
+      </p>
+      <div class="article-metadata">
+        <a class="author-badge" href={path('about/')}>
+          <span class="author-avatar" aria-hidden="true">
+            0x
+          </span>
+          <span data-pagefind-filter="author">{post.data.author}</span>
+        </a>
+        <span>·</span>
+        <time datetime={post.data.date.toISOString()}>
+          {formatDate(post.data.date)}
+        </time>
+        <span>·</span>
+        <span>{readingTime(post.body)} min read</span>
+        {post.data.updated && (
+          <span>Updated {formatDate(post.data.updated)}</span>
+        )}
+      </div>
+      <div class="card-tags">
+        {post.data.tags.map((tag) => (
+          <span data-pagefind-filter="tag">{tag}</span>
+        ))}
+      </div>
+    </header>
+    <div class="article-layout">
+      <div class="article-main">
+        <figure class="article-cover" data-pagefind-ignore>
+          <ArticleCover src={post.data.cover} />
+          <figcaption>
+            RESEARCH FILE / {post.id.toUpperCase().replaceAll('-', ' ')} ·
+            0x7ouda
+          </figcaption>
+        </figure>
+        <TOC headings={headings} mobile />
+        {post.data.sample && (
+          <p class="sample-notice">
+            Lab scenario: this is an authored demonstration using synthetic
+            evidence, not a report of a real compromise. Indicators and
+            timestamps are illustrative.
+          </p>
+        )}
+        <div class="article-prose">
+          <Content />
+        </div>
+        {post.data.tools.length > 0 && (
+          <div class="card-tags">
+            <span>Tools referenced</span>
+            {post.data.tools.map((tool) => (
+              <span data-pagefind-filter="tool">{tool}</span>
+            ))}
+          </div>
+        )}
+        {post.data.artifacts.length > 0 && (
+          <div class="card-tags">
+            <span>Related artifacts</span>
+            {post.data.artifacts.map((artifact) => (
+              <a
+                class="text-link"
+                href={path(`artifacts/${artifact}/`)}
+                data-pagefind-filter="artifact"
+              >
+                {artifact} ↗
+              </a>
+            ))}
+          </div>
+        )}
+        <Comments />
+      </div>
+      <aside class="toc" aria-label="Table of contents" data-pagefind-ignore>
+        <div class="toc-inner">
+          <h2>In this investigation</h2>
+          <TOC headings={headings} />
+          <div class="toc-details">
+            <span class="eyebrow">THE RESEARCH FILE</span>
+            <p>{readingTime(post.body)} minute read</p>
+            <p>{post.data.category}</p>
+            <a class="text-link" href="#discussion">
+              Discuss the findings <Icon name="arrow" size={13} />
+            </a>
+            <a class="text-link" href={postUrl(post)}>
+              Permanent link <Icon name="diagonal" size={13} />
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </article>
+  <section class="container related-section" data-pagefind-ignore>
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow section-number">FOLLOW ANOTHER THREAD</span>
+        <h2>Related research</h2>
+      </div>
+    </div>
+    <div class="post-grid">
+      {related.map((entry) => (
+        <PostCard post={entry} />
+      ))}
+    </div>
+  </section>
+</Base>

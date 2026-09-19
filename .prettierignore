@@ -1,0 +1,10 @@
+node_modules
+.local
+dist
+.astro
+.wrangler
+package-lock.json
+prompt.txt
+playwright-report
+test-results
+public/fonts
