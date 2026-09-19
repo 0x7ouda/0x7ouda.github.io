@@ -144,7 +144,7 @@ FSINFO is typically located at sector 1 (right after the boot sector), as specif
 
 ### How do you calculate the free space?
 
-Now we know the available free clusters, and to calculate the free space we need to know how many sectors there are per cluster. From the [previous sector](#img-1) , we can determine the sectors per cluster, and the calculation is as follows:
+Now we know the available free clusters, and to calculate the free space we need to know how many sectors there are per cluster. From the first image , we can determine the sectors per cluster, and the calculation is as follows:
 
 free-space = sector per cluster * num of free cluster * 512
 
@@ -180,7 +180,7 @@ All of the above is part of the file system area, while the data area is the par
 How do you reach the data area location?
 
 Data Area Location = num of reserved sector + FAT1 + FAT2
-[from boot sector](#img-1)
+
 
 Data Area Location = 6654 + (2*769) = 8192
 
