@@ -8,7 +8,7 @@ description: 'A practical SOC home lab guide to building Splunk detection rules 
 toc: true
 ---
 
-# Hello Everyone!
+## Hello Everyone!
 
 ##### To be able to follow along with this part, you need to have done the configuration first—the one we setup in the previous post. If you’re just dropping in to follow along, I hope I can still help. Here’s the link to the [previous_post]({% post_url 2025-12-29-SOC_Home_Lab_Configruation %}) We previously set up a web app, deployed DVWA on it, and sent the logs to Splunk so we can monitor events in real time.
 
@@ -214,7 +214,7 @@ index=waf sourcetype=modsecurity:json | eval decoded_field = urldecode(ip) | whe
 
 ![Image](/images/notes/Splunk-Destection_Rule/8_10.png)
 
-# payload
+## payload
 
 ```bash
 1 ' OR 1=1#
@@ -254,4 +254,4 @@ index=webapp source="C:\\xampp\\apache\\logs\\access.log" user_agent="*sqlmap*" 
 
 ![Image](/images/notes/Splunk-Destection_Rule/8_13.png)
 
-# Thanks For Reading
+## Thanks For Reading

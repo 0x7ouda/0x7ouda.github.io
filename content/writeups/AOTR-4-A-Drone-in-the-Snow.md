@@ -8,7 +8,7 @@ description: "A recovered disk blew the case open. The files inside weren't theo
 toc: true
 ---
 
-# Scenario
+## Scenario
 
 Advent of The Relics 4 - A Drone in the Snow
 Read the campaign introduction and supporting information [here](https://github.com/hackthebox/advent-of-the-relics)
@@ -243,4 +243,4 @@ $ python3 mavlogdump.py --type GPS log.bin | cut -d':' -f15| sort -n |tail -1
 
 ### ✅ Answer: 47.4819399, 19.0191600
 
-# Thanks For Reading
+## Thanks For Reading

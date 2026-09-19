@@ -9,7 +9,7 @@ cover: '/images/research/curve-finance-dns-hijacking/0.png'
 toc: true
 ---
 
-# From DNS Hijacking to Stealing Over $600K
+## From DNS Hijacking to Stealing Over $600K
 
 ## Note
 

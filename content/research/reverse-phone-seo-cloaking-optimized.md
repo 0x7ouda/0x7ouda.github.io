@@ -9,7 +9,7 @@ cover: '/images/research/reverse-phone-seo-cloaking/0.png'
 toc: true
 ---
 
-# Reverse Phone SEO Cloaking Infrastructure, Synthetic Phone Generation, and Ad Monetization
+## Reverse Phone SEO Cloaking Infrastructure, Synthetic Phone Generation, and Ad Monetization
 
 ## Initial Investigation
 

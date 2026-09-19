@@ -9,7 +9,7 @@ cover: /images/notes/file-system-analysis-ecdfp/0.png
 toc: true
 ---
 
-# File System Analysis
+## File System Analysis
 
 ## Introduction
 

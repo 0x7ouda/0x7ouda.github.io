@@ -359,4 +359,4 @@ open file `Operation_Winter_Blackout_CLASSIFIED.pdf`
 
 ![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/8.png)
 
-# Thanks For Reading
+## Thanks For Reading

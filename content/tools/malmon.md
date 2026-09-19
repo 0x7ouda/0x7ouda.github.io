@@ -9,7 +9,6 @@ cover: '/images/tools/malmon/0.png'
 toc: true
 ---
 
-# MalMon
 
 **MalMon** is a Windows-only dynamic runtime monitoring tool designed for quick malware and suspicious-sample triage.
 

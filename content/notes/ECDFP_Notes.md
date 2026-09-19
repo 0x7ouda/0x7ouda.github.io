@@ -8,7 +8,7 @@ cover: /images/notes/ECDFP_Notes/0.png
 toc: true
 ---
 
-# ECDFP Notes
+## ECDFP Notes
 
 These notes are a personal study guide for ECDFP (Digital Forensics), focusing on the fundamentals of disk forensics and disk structures.
 They aim to explain core concepts in a clear and practical way, starting from low-level disk addressing (CHS and LBA) and moving through volumes, partitions, and boot mechanisms.
