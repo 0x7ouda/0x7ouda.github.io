@@ -2,156 +2,261 @@
   .post-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 26px;
+    gap: 20px;
   }
+
   .post-grid > div {
     min-width: 0;
   }
+
   .post-card {
     height: 100%;
     overflow: hidden;
+
     border: 1px solid #394333;
     border-radius: 12px;
+
     background: linear-gradient(150deg, #1a2019, #121712);
+
     transition:
       border-color 0.25s,
       transform 0.25s,
       box-shadow 0.25s;
   }
+
   .post-card:hover {
     transform: translateY(-4px);
     border-color: #698655;
     box-shadow: 0 18px 46px #0003;
   }
+
   .card-cover {
     position: relative;
     overflow: hidden;
+
     border-bottom: 1px solid #394333;
   }
+
   .publication-cover {
+    display: block;
+
     width: 100%;
     height: auto;
+
     aspect-ratio: 16 / 9;
     object-fit: cover;
-    display: block;
   }
+
   .card-cover .publication-cover {
     transition: transform 0.6s ease;
   }
+
   .post-card:hover .card-cover .publication-cover {
     transform: scale(1.025);
   }
+
   .card-cover-meta {
     position: absolute;
     inset: auto 0 0;
+
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 12px;
-    padding: 45px 28px 20px;
-    font: 10px var(--mono);
+
+    gap: 10px;
+
+    padding: 38px 20px 16px;
+
+    font: 9px var(--mono);
+
     background: linear-gradient(transparent, #0b100bef);
     color: #c3d0b7;
+
     pointer-events: none;
   }
+
   .card-cover-meta span {
     color: var(--green);
   }
+
   .post-card-body {
-    padding: 28px;
+    padding: 22px;
   }
+
   .post-card-title {
-    margin-top: 14px;
-    font-size: 27px;
+    margin-top: 12px;
+
+    font-size: 22px;
     line-height: 1.25;
     letter-spacing: -0.04em;
   }
+
   .post-card-title a {
     display: flex;
-    gap: 20px;
+
+    gap: 14px;
     align-items: start;
   }
+
   .post-card-title svg {
-    flex: 0 0 20px;
+    flex: 0 0 18px;
+
     margin-left: auto;
-    margin-top: 6px;
+    margin-top: 5px;
+
     color: #98ab87;
   }
+
   .post-card-body > p {
-    margin-top: 16px;
-    font-size: 13px;
-    line-height: 1.9;
+    margin-top: 14px;
+
+    font-size: 12px;
+    line-height: 1.8;
+
     color: var(--muted);
+
     max-width: 70ch;
   }
+
   .post-card .card-tags {
-    gap: 7px;
-    margin-top: 23px;
+    gap: 6px;
+    margin-top: 18px;
   }
+
   .post-card .card-tags span {
-    font-size: 9px;
-    padding: 4px 8px;
+    padding: 3px 7px;
+
+    font-size: 10px;
+
     background: #b0d39406;
+
     border-radius: 4px;
   }
+
   .post-card .card-meta {
-    padding-top: 20px;
+    padding-top: 17px;
+    margin-top: 20px;
+
     border-top: 1px solid #b0d39414;
-    margin-top: 26px;
   }
+
   .featured-card .publication-cover {
     aspect-ratio: 16 / 6;
   }
+
   .featured-card .post-card-body {
-    padding: 32px 38px;
+    padding: 28px 30px;
   }
+
   .featured-card .post-card-title {
-    font-size: 36px;
+    font-size: 30px;
   }
+
   .featured-card .card-cover-meta {
-    padding-inline: 38px;
+    padding-inline: 30px;
   }
 }
+
 @layer responsive {
+  /*
+   * Desktop:
+   * 4 cards on every page:
+   * Home / Research / Writeups / Notes / Tools
+   */
   @media (min-width: 1100px) {
-    .research-section .post-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .post-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
     }
-    .research-section .post-grid .post-card-title {
-      font-size: 23px;
+
+    .post-grid .post-card-body {
+      padding: 20px;
+    }
+
+    .post-grid .post-card-title {
+      font-size: 20px;
+      line-height: 1.28;
+    }
+
+    .post-grid .post-card-body > p {
+      font-size: 11px;
+      line-height: 1.75;
+    }
+
+    .post-grid .card-cover-meta {
+      padding: 34px 18px 14px;
+      font-size: 8px;
+    }
+
+    .post-grid .post-card .card-tags {
+      margin-top: 16px;
+    }
+
+    .post-grid .post-card .card-meta {
+      margin-top: 18px;
+      padding-top: 15px;
     }
   }
+
+  /*
+   * Tablet:
+   * 2 cards
+   */
+  @media (max-width: 1099px) {
+    .post-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
   @media (max-width: 800px) {
     .post-card-title {
       font-size: 23px;
     }
+
     .post-card-body {
       padding: 22px;
     }
+
     .card-cover-meta {
       padding-inline: 22px;
+
       font-size: 9px;
     }
   }
+
+  /*
+   * Mobile:
+   * 1 card
+   */
   @media (max-width: 600px) {
     .post-grid {
       grid-template-columns: 1fr;
       gap: 22px;
     }
+
     .post-card-title,
     .featured-card .post-card-title {
       font-size: 25px;
     }
+
+    .post-card-body > p {
+      font-size: 13px;
+      line-height: 1.85;
+    }
+
     .featured-card .publication-cover {
       aspect-ratio: 16 / 10;
     }
+
     .featured-card .post-card-body {
       padding: 24px;
     }
+
     .featured-card .card-cover-meta {
       padding-inline: 24px;
     }
   }
+
   @media (prefers-reduced-motion: reduce) {
     .post-card:hover,
     .post-card:hover .publication-cover {

@@ -1,6 +1,4 @@
 ---
-import { path } from '../lib/site';
-
 type TagPost = {
   collection: string;
   data: {
@@ -12,11 +10,9 @@ const { posts = [] } = Astro.props as {
   posts?: TagPost[];
 };
 
-const writeups = posts.filter((post) => post.collection === 'writeups');
-
 const tagCounts = new Map<string, number>();
 
-for (const post of writeups) {
+for (const post of posts) {
   for (const rawTag of post.data.tags ?? []) {
     const tag = String(rawTag).trim();
 
@@ -32,47 +28,31 @@ const tags = [...tagCounts.entries()].sort(
 ---
 
 {tags.length > 0 && (
-  <section class="tag-rail" aria-label="Explore writeups by tag">
+  <section class="tag-rail" aria-label="Explore content by tag">
     <div class="tag-rail-inner container">
       <div class="tag-rail-heading">
         <span># EXPLORE BY TAG</span>
-
-        <button
-          class="tag-rail-toggle"
-          type="button"
-          aria-label="Pause tag movement"
-          aria-pressed="false"
-        >
-          II
-        </button>
       </div>
 
       <div class="tag-rail-viewport">
         <div class="tag-rail-track">
           <div class="tag-rail-group">
             {tags.map(([tag, count]) => (
-              <a
-                class="tag-rail-chip"
-                href={`${path('writeups/')}?tag=${encodeURIComponent(tag)}`}
-              >
+              <span class="tag-rail-chip">
                 <span class="tag-hash">#</span>
                 <span>{tag}</span>
                 <sup>{count}</sup>
-              </a>
+              </span>
             ))}
           </div>
 
           <div class="tag-rail-group" aria-hidden="true">
             {tags.map(([tag, count]) => (
-              <a
-                class="tag-rail-chip"
-                href={`${path('writeups/')}?tag=${encodeURIComponent(tag)}`}
-                tabindex="-1"
-              >
+              <span class="tag-rail-chip">
                 <span class="tag-hash">#</span>
                 <span>{tag}</span>
                 <sup>{count}</sup>
-              </a>
+              </span>
             ))}
           </div>
         </div>
@@ -80,27 +60,6 @@ const tags = [...tagCounts.entries()].sort(
     </div>
   </section>
 )}
-
-<script>
-  document.querySelectorAll('.tag-rail').forEach((rail) => {
-    const button = rail.querySelector<HTMLButtonElement>('.tag-rail-toggle');
-    const track = rail.querySelector<HTMLElement>('.tag-rail-track');
-
-    if (!button || !track) return;
-
-    button.addEventListener('click', () => {
-      const paused = track.classList.toggle('is-paused');
-
-      button.setAttribute('aria-pressed', String(paused));
-      button.setAttribute(
-        'aria-label',
-        paused ? 'Resume tag movement' : 'Pause tag movement',
-      );
-
-      button.textContent = paused ? '▶' : 'II';
-    });
-  });
-</script>
 
 <style>
   .tag-rail {
@@ -110,7 +69,6 @@ const tags = [...tagCounts.entries()].sort(
 
   .tag-rail-inner {
     min-width: 0;
-
     width: min(860px, calc(100% - 96px));
     margin-inline: auto;
   }
@@ -118,8 +76,6 @@ const tags = [...tagCounts.entries()].sort(
   .tag-rail-heading {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 20px;
     margin-bottom: 9px;
   }
 
@@ -127,22 +83,6 @@ const tags = [...tagCounts.entries()].sort(
     color: var(--faint);
     font: 10px/1.4 var(--mono);
     letter-spacing: 0.14em;
-  }
-
-  .tag-rail-toggle {
-    display: grid;
-    place-items: center;
-    width: 27px;
-    height: 27px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--faint);
-    font: 8px var(--mono);
-  }
-
-  .tag-rail-toggle:hover {
-    color: var(--green);
-    border-color: #718365;
   }
 
   .tag-rail-viewport {
@@ -169,12 +109,10 @@ const tags = [...tagCounts.entries()].sort(
   .tag-rail-track {
     display: flex;
     width: max-content;
-    animation: tag-rail-move 35s linear infinite;
-    will-change: transform;
-  }
 
-  .tag-rail-track.is-paused {
-    animation-play-state: paused;
+    animation: tag-rail-move 35s linear infinite;
+
+    will-change: transform;
   }
 
   @media (hover: hover) {
@@ -218,6 +156,7 @@ const tags = [...tagCounts.entries()].sort(
     color: var(--text);
     border-color: #9fc38170;
     background: #25321f;
+
     transform: translateY(-1px);
   }
 
@@ -230,6 +169,7 @@ const tags = [...tagCounts.entries()].sort(
     top: -1px;
 
     color: var(--faint);
+
     font-size: 11px;
     font-weight: 600;
   }
@@ -247,6 +187,10 @@ const tags = [...tagCounts.entries()].sort(
   @media (max-width: 600px) {
     .tag-rail {
       padding-top: 8px;
+    }
+
+    .tag-rail-inner {
+      width: calc(100% - 36px);
     }
 
     .tag-rail-viewport {
@@ -276,10 +220,6 @@ const tags = [...tagCounts.entries()].sort(
     .tag-rail-group[aria-hidden='true'] {
       display: flex;
     }
-
-    .tag-rail-toggle {
-      display: none;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -295,10 +235,6 @@ const tags = [...tagCounts.entries()].sort(
     }
 
     .tag-rail-group[aria-hidden='true'] {
-      display: none;
-    }
-
-    .tag-rail-toggle {
       display: none;
     }
   }
