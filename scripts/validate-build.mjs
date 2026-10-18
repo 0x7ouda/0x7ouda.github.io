@@ -107,7 +107,7 @@ for (const required of [
   'sitemap-index.xml',
   '404.html',
   'pagefind/pagefind.js',
-  'og/default.webp',
+  'og/default.png',
 ]) {
   try {
     await stat(join(root, required));
