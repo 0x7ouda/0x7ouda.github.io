@@ -3,7 +3,7 @@ title: 'AoTR 3 The Abandoned Farmhouse'
 date: 2026-01-03 00:00:00
 category: HackTheBox
 tags: [HackTheBox, encrypted_disk]
-cover: /images/write-up/AoTR_3_The_Abandoned_Farmhouse/0.png
+cover: /images/write-up/AoTR_3_The_Abandoned_Farmhouse/0.webp
 toc: true
 description: ' The coordinates led police and investigator into winter, to a place far enough from everything that no one would notice if something went wrong.'
 ---
@@ -20,13 +20,13 @@ The scenario portrayed in this challenge is entirely fictional and created solel
 
 ##### What is the case number of the evidence file?
 
-![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/1.png)
+![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/1.webp)
 
 ## Task 2
 
 ##### Which version of LUKS disk encryption is used?
 
-![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/2.png)
+![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/2.webp)
 
 ##### Export this partition and rename it as encrypted_partition
 
@@ -99,7 +99,7 @@ bulk_extractor swap_partition -o path/to/output
 
 ```
 
-![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/3.png)
+![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/3.webp)
 
 ```bash
 # BANNER FILE NOT PROVIDED (-b option)
@@ -319,7 +319,7 @@ drwx------ 3 splunk splunk   4096 Dec 31 02:16 ..
 
 open file `Operation_Winter_Blackout_CLASSIFIED.pdf`
 
-![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/4.png)
+![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/4.webp)
 
 ## ✅ Answer: 5960000
 
@@ -329,7 +329,7 @@ open file `Operation_Winter_Blackout_CLASSIFIED.pdf`
 
 open file `Operation_Winter_Blackout_CLASSIFIED.pdf`
 
-![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/5.png)
+![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/5.webp)
 
 ## ✅ Answer: DJI Matrice 300
 
@@ -341,7 +341,7 @@ open file `Operation_Winter_Blackout_CLASSIFIED.pdf`
 
 open file `Emergency_Protocols_CLASSIFIED.pdf`
 
-![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/6.png)
+![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/6.webp)
 
 ## ✅ Answer 8 : FORST
 
@@ -353,10 +353,10 @@ open file `Emergency_Protocols_CLASSIFIED.pdf`
 
 open file `Operation_Winter_Blackout_CLASSIFIED.pdf`
 
-![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/7.png)
+![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/7.webp)
 
 ## ✅ Answer: Budapest
 
-![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/8.png)
+![Image](/images/write-up/AoTR_3_The_Abandoned_Farmhouse/8.webp)
 
 ## Thanks For Reading

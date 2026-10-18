@@ -5,7 +5,7 @@ date: 2026-09-09
 category: 'Blockchain Security'
 tags:
   - Blockchain
-cover: '/images/research/curve-finance-dns-hijacking/0.png'
+cover: '/images/research/curve-finance-dns-hijacking/0.webp'
 toc: true
 ---
 
@@ -29,7 +29,7 @@ We begin our investigation with the known attacker address:
 
 After searching for the attacker’s address on Etherscan, we opened the ERC-20 Token Transfers tab to review its token activity. By checking the older transfers, we identified the following transactions:
 
-![Attacker ERC-20 token transfers](/images/research/curve-finance-dns-hijacking/1.png)
+![Attacker ERC-20 token transfers](/images/research/curve-finance-dns-hijacking/1.webp)
 
 The first transactions appear to be a test of the attack flow. The attacker sent 16.880678 USDC to `0x4547...`, and the same amount was later transferred back through the suspicious contract. This suggests that the attacker was testing whether the malicious transfer mechanism was working correctly.
 
@@ -41,9 +41,9 @@ The first transactions appear to be a test of the attack flow. The attacker sent
 
 When we open transaction `0x32faf49f...`, we can see that the attacker did not receive the funds through a direct transfer from the victim. Instead, the attacker interacted with the malicious contract `0x9Eb5...8881`, as shown in the transaction details and input data. This indicates that the contract was used to pull the victim’s tokens and transfer them to the attacker.
 
-![Transaction details](/images/research/curve-finance-dns-hijacking/2.png)
+![Transaction details](/images/research/curve-finance-dns-hijacking/2.webp)
 
-![Malicious contract interaction](/images/research/curve-finance-dns-hijacking/3.png)
+![Malicious contract interaction](/images/research/curve-finance-dns-hijacking/3.webp)
 
 ### Input Data
 
@@ -105,7 +105,7 @@ The function checks the target wallet’s token balance and the allowance grante
 
 By checking the target wallet, we can confirm that the token-draining operation was successful and the USDC was transferred to the attacker address.
 
-![Victim wallet token transfer](/images/research/curve-finance-dns-hijacking/4.png)
+![Victim wallet token transfer](/images/research/curve-finance-dns-hijacking/4.webp)
 
 ## Calculating the Total Amount Stolen
 
@@ -155,7 +155,7 @@ SELECT
 FROM stolen;
 ```
 
-![Dune Analytics stolen funds result](/images/research/curve-finance-dns-hijacking/5.png)
+![Dune Analytics stolen funds result](/images/research/curve-finance-dns-hijacking/5.webp)
 
 ## Thanks for Reading
 

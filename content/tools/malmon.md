@@ -5,7 +5,7 @@ date: 2026-02-17
 category: 'Malware Analysis'
 tags:
   - Malware Analysis
-cover: '/images/tools/malmon/0.png'
+cover: '/images/tools/malmon/0.webp'
 toc: true
 ---
 

@@ -6,7 +6,7 @@ category: 'CTF'
 tags:
   - CTF
   - CAT Reloaded CTF 26
-cover: '/images/write-up/glyph-dfir-investigation/0.png'
+cover: '/images/write-up/glyph-dfir-investigation/0.webp'
 toc: true
 ---
 
@@ -37,7 +37,7 @@ Also, the `xn--` prefix shows that this part of the domain is encoded using Puny
 
 However, this alone is not enough to say that the domain is malicious. So, let’s check it on VirusTotal.
 
-![Investigation screenshot 1](/images/write-up/glyph-dfir-investigation/1.png)
+![Investigation screenshot 1](/images/write-up/glyph-dfir-investigation/1.webp)
 
 Use CyberChef to decode the Punycode and reveal the real Unicode form of the URL.
 
@@ -49,7 +49,7 @@ To answer this question, we need to find out what the user did on the website th
 
 Open the browser cache using `ChromeCacheView` to see what happened on the website.
 
-![Investigation screenshot 2](/images/write-up/glyph-dfir-investigation/2.png)
+![Investigation screenshot 2](/images/write-up/glyph-dfir-investigation/2.webp)
 
 We found a PHP file in the browser cache. Save the file, then let’s check what it does.
 
@@ -133,7 +133,7 @@ $v="20fc3f"
 
 Open the PowerShell logs to find the exact time when this happened.
 
-![Investigation screenshot 3](/images/write-up/glyph-dfir-investigation/3.png)
+![Investigation screenshot 3](/images/write-up/glyph-dfir-investigation/3.webp)
 
 > _Note: Event Viewer in my VM is using UTC+1, so its timestamps are one hour ahead._
 
@@ -141,7 +141,7 @@ But the question is not asking when the command was executed. It is asking when 
 
 So, we will parse the Prefetch file and check when PowerShell was first launched before the malicious command was executed.
 
-![Investigation screenshot 4](/images/write-up/glyph-dfir-investigation/4.png)
+![Investigation screenshot 4](/images/write-up/glyph-dfir-investigation/4.webp)
 
 > **Answer:** 2025–08–14 16:23:28*
 
@@ -155,7 +155,7 @@ The previous command downloaded the second-stage script and executed it directly
 
 I found this [_LinkedIn_](https://www.linkedin.com/posts/coenemichel_japanese-character-%E3%82%93-used-to-imitate-forward-activity-7361696803722776576-aQt2/)[ ](https://www.linkedin.com/posts/coenemichel_japanese-character-%E3%82%93-used-to-imitate-forward-activity-7361696803722776576-aQt2/)post discussing the same Booking.com phishing campaign. The post also leads to malware samples available on MalwareBazaar, so we can use them to continue analyzing the second-stage payload.
 
-![Investigation screenshot 5](/images/write-up/glyph-dfir-investigation/5.png)
+![Investigation screenshot 5](/images/write-up/glyph-dfir-investigation/5.webp)
 
 This is the same file referenced in the code. Download it so we can continue the analysis.
 
@@ -202,25 +202,25 @@ In the previous post, we can find an ANY.RUN analysis link. This will be very us
 
 Remember that the script generates random file names, so the file names in our artifacts may be different from the ones shown in the ANY.RUN analysis.
 
-![Investigation screenshot 6](/images/write-up/glyph-dfir-investigation/6.png)
+![Investigation screenshot 6](/images/write-up/glyph-dfir-investigation/6.webp)
 
 As we can see in the ANY.RUN analysis, `csc.exe` uses a randomly named `.cmdline` file from the user’s Temp directory.
 
 Since the file name is generated randomly, it may have a different name on our system. Let’s parse the `$MFT`, `$J`, and `$LogFile` using `NTFS Log Tracker `to find the related file and build timeline.
 
-![Investigation screenshot 7](/images/write-up/glyph-dfir-investigation/7.png)
+![Investigation screenshot 7](/images/write-up/glyph-dfir-investigation/7.webp)
 
 We found the file, and it was created and deleted almost at the same time.
 
 Now, let’s search for its Parent File Reference Number to reconstruct the full path and confirm where the file was located.
 
-![Investigation screenshot 8](/images/write-up/glyph-dfir-investigation/8.png)
+![Investigation screenshot 8](/images/write-up/glyph-dfir-investigation/8.webp)
 
 > **Answer:** C:\Users\Administrator\AppData\Local\Temp\22ukhacj\22ukhacj.cmdline*
 
 ## Q6 => Upon executing the dropped installer, it launches an executable that, in turn, drops the second-stage malware. What is the name of that executable?
 
-![Investigation screenshot 9](/images/write-up/glyph-dfir-investigation/9.png)
+![Investigation screenshot 9](/images/write-up/glyph-dfir-investigation/9.webp)
 
 > **Answer:** EnginInf16.exe*
 
@@ -228,7 +228,7 @@ Now, let’s search for its Parent File Reference Number to reconstruct the full
 
 After many ideas and failed attempts to solve this question, I went back to NTFS Log Tracker. In the **Suspicious Behavior** tab, I found something important.
 
-![Investigation screenshot 10](/images/write-up/glyph-dfir-investigation/10.png)
+![Investigation screenshot 10](/images/write-up/glyph-dfir-investigation/10.webp)
 
 The file was actually created on `2025-08-14 16:25:10`, but its timestamps were manipulated to make it look older. This was done to hide the file's connection to the current infection chain.
 
@@ -242,9 +242,9 @@ By comparing the SRUM data with the timeline and the files executed after the pr
 
 The same executable also appears in the ANY.RUN analysis, which helps confirm that.
 
-![Investigation screenshot 11](/images/write-up/glyph-dfir-investigation/11.png)
+![Investigation screenshot 11](/images/write-up/glyph-dfir-investigation/11.webp)
 
-![Investigation screenshot 12](/images/write-up/glyph-dfir-investigation/12.png)
+![Investigation screenshot 12](/images/write-up/glyph-dfir-investigation/12.webp)
 
 Now we found the executable responsible for the C2 connection.
 
@@ -256,13 +256,13 @@ Keep in mind that it ran twice, so we need to add the **Data Sent** values from 
 
 There was another C2 connection active at the same time as the previous file. However, we need to identify the real name of the file responsible for that connection.
 
-![Investigation screenshot 13](/images/write-up/glyph-dfir-investigation/13.png)
+![Investigation screenshot 13](/images/write-up/glyph-dfir-investigation/13.webp)
 
 Go to the file path and open the executable with PEStudio or another PE analysis tool.
 
 Then check the file metadata or version information to identify its **Original File Name**.
 
-![Investigation screenshot 14](/images/write-up/glyph-dfir-investigation/14.png)
+![Investigation screenshot 14](/images/write-up/glyph-dfir-investigation/14.webp)
 
 We could not find the original file name from the local file metadata.
 
@@ -278,19 +278,19 @@ I checked different analysis reports and write-ups, but the IP addresses were di
 
 So, let’s go back to the timeline analysis and follow the infection chain step by step.
 
-![Investigation screenshot 15](/images/write-up/glyph-dfir-investigation/15.png)
+![Investigation screenshot 15](/images/write-up/glyph-dfir-investigation/15.webp)
 
 I found that this executable ran before the second C2 connection. Also, based on the first C2 and the ANY.RUN analysis, we know that a loader was responsible for launching it.
 
 So, let’s go to the file path and analyze it dynamically using tools like Procmon to check whether it launches the C2-related process.
 
-![Investigation screenshot 16](/images/write-up/glyph-dfir-investigation/16.png)
+![Investigation screenshot 16](/images/write-up/glyph-dfir-investigation/16.webp)
 
 As we can see, the loader started and launched the second C2-related process.
 
 Now, we can use FakeNet-NG or another network analysis tool to capture the connection and identify the C2 IP address.
 
-![Investigation screenshot 17](/images/write-up/glyph-dfir-investigation/17.png)
+![Investigation screenshot 17](/images/write-up/glyph-dfir-investigation/17.webp)
 
 > **Answer:** 85.192.48.239*
 
@@ -350,7 +350,7 @@ This confirms that the malware used a scheduled task to keep launching the loade
 
 > **Answer:** T1053.005*
 
-![Investigation screenshot 18](/images/write-up/glyph-dfir-investigation/18.png)
+![Investigation screenshot 18](/images/write-up/glyph-dfir-investigation/18.webp)
 
 ## Finally, we got the flag.
 

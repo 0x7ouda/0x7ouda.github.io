@@ -35,9 +35,9 @@ The scenario portrayed in this challenge is entirely fictional and created solel
 
 open file `.plan` in `qGroundControl`
 
-![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/1.png)
-![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/2.png)
-![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/3.png)
+![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/1.webp)
+![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/2.webp)
+![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/3.webp)
 
 ### ✅ Answer: 49
 
@@ -51,7 +51,7 @@ open file `.plan` in `qGroundControl`
 
 #### Which landmark/building does the drone fly around during the planned route?
 
-![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/4.png)
+![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/4.webp)
 
 ### ✅ Answer: Citadella
 
@@ -59,7 +59,7 @@ open file `.plan` in `qGroundControl`
 
 #### At which mission item did the drone have a planned hold/loiter?
 
-![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/5.png)
+![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/5.webp)
 
 ### ✅ Answer: 18
 
@@ -73,7 +73,7 @@ open file `.plan` in `qGroundControl`
 
 #### Which bridge is the drone planned to pass by while crossing the Danube in order to reach the other part of the city? (English name)
 
-![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/6.png)
+![Image](/images/write-up/AOTR-4-A-Drone-in-the-Snow/6.webp)
 
 ### ✅ Answer: Elisabeth Bridge
 

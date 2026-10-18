@@ -3,7 +3,7 @@ title: 'The Art of Memory Forensics Chapter-05'
 date: 2026-10-09 00:00:00
 category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
-cover: /images/notes/chapter-5-the-art-of-memory/0.png
+cover: /images/notes/chapter-5-the-art-of-memory/0.webp
 description: 'Brief notes summarizing Chapter 5 of (AMF), focusing on Windows objects, kernel pool allocations, pool tags, pool-scanning techniques, Big Page Pool analysis, and alternative methods for locating kernel objects.'
 toc: true
 ---
@@ -123,7 +123,7 @@ Driv   143         6         67504        0       0       0
 
 How does Volatility determine whether a pool tag found in a memory dump actually belongs to a real process? It validates the finding using several conditions, such as the allocation size, memory type, expected structure, and other constraints, to decide whether the data represents a valid `_EPROCESS` structure or is just a false positive.
 
-![image](/images/notes/chapter-5-the-art-of-memory/1.png)
+![image](/images/notes/chapter-5-the-art-of-memory/1.webp)
 
 ## Limitations of Pool Scanning
 
@@ -140,7 +140,7 @@ How does Volatility determine whether a pool tag found in a memory dump actually
 
 ## Big Page Pool
 
-![image](/images/notes/chapter-5-the-art-of-memory/2.png)
+![image](/images/notes/chapter-5-the-art-of-memory/2.webp)
 
 The difference between normal pool allocations and Big Page Pool allocations is that, in normal pool allocations, the scanner finds the pool tag and then the `_EPROCESS` structure, allowing it to identify the allocation as a process. If a kernel driver makes the allocation larger than one memory page, the scanner may no longer find the expected pool metadata next to the allocation, so the process may be missed by traditional pool scanning.
 

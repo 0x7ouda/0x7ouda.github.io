@@ -14,7 +14,7 @@ toc: true
 
 ##### If you followed what we did in the previous post, you should have logs like these.
 
-![Image](/images/notes/Splunk-Destection_Rule/8_1.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_1.webp)
 
 ##### Let’s start running some attacks and creating detections for them.
 
@@ -37,7 +37,7 @@ Fields Like:
 
 ##### To extract the fields, from the bottom-left section you can select Extract More Fields and follow the steps. I’ll leave the field names in this image.
 
-![Image](/images/notes/Splunk-Destection_Rule/8_2.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_2.webp)
 
 ## XSS_Attack And Detections
 
@@ -120,7 +120,7 @@ AND request!="*/dashboard/javascripts/*.js"
 
 ##### Now add this rule to Splunk Search, make sure the time range is set to Real-time, and then add the payload in DVWA again. You will see that the detection is complete.
 
-![Image](/images/notes/Splunk-Destection_Rule/8_3.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_3.webp)
 
 ##### Now, we want to make sure that this rule triggers an alert. To do that, you can follow these steps:
 
@@ -135,11 +135,11 @@ AND request!="*/dashboard/javascripts/*.js"
   - Trigger Actions: Add To Triggered Alert
 - Click Save to apply the alert
 
-![Image](/images/notes/Splunk-Destection_Rule/8_4.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_4.webp)
 
 ##### Now, from the top menu, go to Activity and then Triggered Alerts. You will see that a new alert has been created.
 
-![Image](/images/notes/Splunk-Destection_Rule/8_5.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_5.webp)
 
 ## Command Injection
 
@@ -149,7 +149,7 @@ To solve this, you need to install the WAF so we can view the body of the reques
 
 ##### Open your lab in Command Injection and try to ping any IP. This will generate a request that looks like the following, where the command injection occurs in the request body
 
-![Image](/images/notes/Splunk-Destection_Rule/8_6.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_6.webp)
 
 ## Request
 
@@ -178,7 +178,7 @@ ip=10.10.10.1&Submit=Submit
 
 ##### In this request, you can see that the command is being sent in a parameter called ip. We’ll mention a few methods that could be used to bypass the ip filter and execute commands on the system.
 
-![Image](/images/notes/Splunk-Destection_Rule/8_7.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_7.webp)
 
 ##### Bypass Methods | ; & && || - )
 
@@ -189,7 +189,7 @@ index=waf sourcetype=modsecurity:json | eval decoded_field = urldecode(ip) | whe
 
 ```
 
-![Image](/images/notes/Splunk-Destection_Rule/8_8.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_8.webp)
 
 ##### Now, we want to make sure that this rule triggers an alert. To do that, you can follow these steps:
 
@@ -206,13 +206,13 @@ index=waf sourcetype=modsecurity:json | eval decoded_field = urldecode(ip) | whe
 
 ##### go to Activity and then Triggered Alerts. You will see that a new alert has been created.
 
-![Image](/images/notes/Splunk-Destection_Rule/8_9.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_9.webp)
 
 ## SQLI
 
 ##### Now we will execute SQLi attacks. Go to the SQL page, where you will find a search field that looks up the user ID. This will be the place where we execute the payload.
 
-![Image](/images/notes/Splunk-Destection_Rule/8_10.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_10.webp)
 
 ## payload
 
@@ -221,7 +221,7 @@ index=waf sourcetype=modsecurity:json | eval decoded_field = urldecode(ip) | whe
 
 ```
 
-![Image](/images/notes/Splunk-Destection_Rule/8_11.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_11.webp)
 
 ##### Now let’s look at the different payloads used in the attack so we can add them to the rule. The payloads include:
 
@@ -248,10 +248,10 @@ index=webapp source="C:\\xampp\\apache\\logs\\access.log" user_agent="*sqlmap*" 
 
 ```
 
-![Image](/images/notes/Splunk-Destection_Rule/8_12.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_12.webp)
 
 ##### Now, we want to make sure that this rule triggers an alert. To do that, you can follow the same steps used in the previous attacks.
 
-![Image](/images/notes/Splunk-Destection_Rule/8_13.png)
+![Image](/images/notes/Splunk-Destection_Rule/8_13.webp)
 
 ## Thanks For Reading

@@ -3,7 +3,7 @@ title: 'The Art of Memory Forensics Chapter-01'
 date: 2026-09-21 00:00:00
 category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
-cover: /images/notes/chapter-1-the-art-of-memory/0.png
+cover: /images/notes/chapter-1-the-art-of-memory/0.webp
 description: 'Brief notes summarizing Chapter 1 of The Art of Memory Forensics, with a focus on system overview and core operating system concepts.'
 toc: true
 ---
@@ -20,7 +20,7 @@ A PC consists of interconnected hardware components, with the motherboard acting
 
 The CPU executes instructions, while main memory temporarily stores the running programs and their data. The CPU repeatedly accesses memory to fetch instructions and data, then executes those instructions.
 
-![image](/images/notes/chapter-1-the-art-of-memory/1.png)
+![image](/images/notes/chapter-1-the-art-of-memory/1.webp)
 
 Because main memory is much slower than the CPU, modern processors use multiple levels of cache memory to keep frequently needed data close to the CPU. L1 is the fastest and smallest, while subsequent cache levels are larger but slower. On a cache miss, the processor searches the next cache level and eventually main memory.
 
@@ -103,7 +103,7 @@ In IA-32, virtual memory is divided into fixed-size pages, commonly 4 KB. When a
 
 For a 4 KB page, the 32-bit virtual address is divided into:
 
-![image](/images/notes/chapter-1-the-art-of-memory/2.png)
+![image](/images/notes/chapter-1-the-art-of-memory/2.webp)
 
 **The translation flow is:**
 
@@ -169,7 +169,7 @@ To obtain the final Physical Address, we add the address offset from the virtual
 
 Look at the Next image to understand the steps.
 
-![image](/images/notes/chapter-1-the-art-of-memory/3.png)
+![image](/images/notes/chapter-1-the-art-of-memory/3.webp)
 
 ## PAE (Physical Address Extension)
 
@@ -177,13 +177,13 @@ Look at the Next image to understand the steps.
 
 PAE adds an extra paging level called the PDPT, uses 64-bit paging entries, and splits the 32-bit virtual address into 2 + 9 + 9 + 12 bits.
 
-![image](/images/notes/chapter-1-the-art-of-memory/4.png)
+![image](/images/notes/chapter-1-the-art-of-memory/4.webp)
 
 ## Intel 64 Architecture
 
 Intel 64 expands the registers to 64 bits and supports 64-bit linear addressing. In the implementation discussed here, only 48 bits of the virtual address are used. Therefore, bits 63:48 must copy bit 47: all 0s if bit 47 is 0, or all 1s if bit 47 is 1 (canonical addressing). Intel 64 also adds the PML4 paging level and supports 4 KB, 2 MB, and 1 GB pages.
 
-![image](/images/notes/chapter-1-the-art-of-memory/5.png)
+![image](/images/notes/chapter-1-the-art-of-memory/5.webp)
 
 ## 64 Architecture Address Translation Example:
 
@@ -287,7 +287,7 @@ Operating systems track the resources used by processes, such as files, sockets,
 
 Each process has its own private virtual address space, which separates the memory seen by the process from the actual physical RAM. Not all virtual pages must be resident in physical memory; some may be moved to secondary storage, such as the Windows paging file (C:\pagefile.sys), to free space in RAM. When the process accesses a page that is no longer resident in RAM, a page fault occurs and the operating system brings the page back from secondary storage. The MMU and memory manager translate virtual addresses to physical addresses.
 
-![image](/images/notes/chapter-1-the-art-of-memory/6.png)
+![image](/images/notes/chapter-1-the-art-of-memory/6.webp)
 
 ### Demand Paging
 
@@ -295,7 +295,7 @@ Demand paging is a virtual memory technique in which the operating system loads 
 
 ### Shared Memory
 
-![image](/images/notes/chapter-1-the-art-of-memory/7.png)
+![image](/images/notes/chapter-1-the-art-of-memory/7.webp)
 
 Shared memory allows multiple processes to map different virtual addresses to the same physical memory pages. It is commonly used for inter-process communication and to reduce memory usage by sharing common code and libraries. Shared pages are often implemented using copy-on-write, where a private copy is created only when a process modifies the shared page. In memory forensics, differences in shared library pages may indicate malicious modification or code injection. Chapter 17 provides an example of how these discrepancies can be detected by comparing memory shared between multiple processes.
 

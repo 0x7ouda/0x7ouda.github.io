@@ -3,7 +3,7 @@ title: 'The Art of Memory Forensics Chapter-08'
 date: 2026-10-16 00:00:00
 category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
-cover: /images/notes/chapter-8-the-art-of-memory/0.png
+cover: /images/notes/chapter-8-the-art-of-memory/0.webp
 description: 'Explores Windows malware detection in process memory, covering PEB artifacts, suspicious DLLs, code injection, process hollowing and Volatility techniques for identifying hidden malware activity.'
 toc: true
 ---
@@ -36,7 +36,7 @@ The book demonstrates this using two Notepad processes: one opened a large log f
 
 **Note:** The `heaps` command used in the book is not available in my current Volatility 2.6.1 installation. An alternative is to visualize the process's VAD tree using: `vadtree -p <PID> --output=dot --output-file=vadtree.dot` In Volatility 2's VAD visualization, heap-related regions are highlighted in **red**, helping identify potential heap regions for further examination.
 
-![image](/images/notes/chapter-8-the-art-of-memory/1.png)
+![image](/images/notes/chapter-8-the-art-of-memory/1.webp)
 
 ```bash
 Current context: process notepad.exe, pid=3988, ppid=416 DTB=0x140ab4e0
@@ -118,7 +118,7 @@ From the `envars` output, we can see an unusual environment variable appearing i
 
 #### Coreflood Behavior
 
-![image](/images/notes/chapter-8-the-art-of-memory/2.png)
+![image](/images/notes/chapter-8-the-art-of-memory/2.webp)
 
 ### Standard Handles
 
@@ -181,7 +181,7 @@ From a forensic perspective, we should investigate unusual DLL names or paths, u
 
 Windows maintains three doubly linked lists of loaded modules through `_PEB_LDR_DATA`: `InLoadOrderModuleList`, `InMemoryOrderModuleList`, and `InInitializationOrderModuleList`. Each module is represented by an `_LDR_DATA_TABLE_ENTRY`.Malware can hide a DLL through **DLL Unlinking**, removing its metadata entry from one or all three lists while leaving the DLL mapped in process memory. It may also modify `FullDllName` and `BaseDllName` to display fake module paths.
 
-![image](/images/notes/chapter-8-the-art-of-memory/3.png)
+![image](/images/notes/chapter-8-the-art-of-memory/3.webp)
 
 Volatility provides several approaches for investigating these techniques:
 
@@ -242,7 +242,7 @@ These plugins depend on valid PE headers and section information. If malware mod
 
 Malware often uses **packers** to compress, encrypt, or obfuscate its original code and strings. A packed executable typically contains an **unpacking stub**, which executes first and restores the original code in memory before transferring execution to it.This makes memory analysis particularly useful because the unpacked code may become accessible during execution, even when static analysis of the original disk file reveals very little.
 
-![image](/images/notes/chapter-8-the-art-of-memory/4.png)
+![image](/images/notes/chapter-8-the-art-of-memory/4.webp)
 
 **Note:** Modern unpacking tools can unpack certain malware samples without requiring analysts to manually execute the EXE. Some tools use static unpacking techniques, while others rely on emulation or controlled execution. Therefore, directly running the malware is not always necessary, although successful unpacking depends on the packer used.
 
@@ -258,7 +258,7 @@ Code injection allows malware to execute code within the address space of anothe
 
 4. **Process Hollowing:** Malware creates a legitimate process in a suspended state, removes or unmaps its original executable image, and replaces it with malicious code. The PEB may still contain the legitimate executable's name and path, while the actual memory mapping has changed. Investigators can detect this by comparing PEB information with VADs using `vadinfo` and `ldrmodules`.
 
-![image](/images/notes/chapter-8-the-art-of-memory/5.png)
+![image](/images/notes/chapter-8-the-art-of-memory/5.webp)
 
 ### Detecting Injected Code
 

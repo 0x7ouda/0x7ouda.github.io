@@ -5,7 +5,7 @@ date: 2026-08-17
 category: 'OSINT'
 tags:
   - OSINT
-cover: '/images/research/reverse-phone-seo-cloaking/0.png'
+cover: '/images/research/reverse-phone-seo-cloaking/0.webp'
 toc: true
 ---
 
@@ -15,15 +15,15 @@ toc: true
 
 After receiving a suspicious message on my personal phone number, my initial assessment was that it appeared consistent with a social engineering attempt, potentially aimed at obtaining access to or stealing funds from an electronic wallet.
 
-![Suspicious message received on the phone](/images/research/reverse-phone-seo-cloaking/1.png)
+![Suspicious message received on the phone](/images/research/reverse-phone-seo-cloaking/1.webp)
 
-![Additional screenshot from the suspicious message](/images/research/reverse-phone-seo-cloaking/2.png)
+![Additional screenshot from the suspicious message](/images/research/reverse-phone-seo-cloaking/2.webp)
 
 ## Suspicious Search Result
 
 While conducting OSINT research on the sender’s phone number, I encountered an unusual result. The number appeared on a Google-indexed page surfaced by the OSINT platform. However, when I accessed the page directly in a browser, its behavior immediately raised questions: the page rendered completely blank, with no visible content corresponding to what had appeared in the search results.
 
-![Google-indexed reverse-phone search result](/images/research/reverse-phone-seo-cloaking/3.png)
+![Google-indexed reverse-phone search result](/images/research/reverse-phone-seo-cloaking/3.webp)
 
 ## Source Code Analysis
 
@@ -652,7 +652,7 @@ function generateCompanyNameJSON(seed) {
 
   // img o placeholder
   const img = document.createElement('img');
-  img.src = 'un.png';
+  img.src = 'un.webp';
   //img.style.width = '160px';
   //img.style.height = '160px';
 
@@ -1519,4 +1519,4 @@ In simple terms:
 
 **Synthetic content → Google indexing → organic search traffic → redirect → advertising monetization.**
 
-![Redirect and monetization investigation result](/images/research/reverse-phone-seo-cloaking/4.png)
+![Redirect and monetization investigation result](/images/research/reverse-phone-seo-cloaking/4.webp)

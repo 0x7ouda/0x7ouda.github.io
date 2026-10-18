@@ -41,7 +41,7 @@ export async function GET({ props }: APIContext) {
     .join(
       '',
     )}<text x="65" y="585" fill="#a7b399" font-family="monospace" font-size="15">DIGITAL FORENSICS · THREAT HUNTING · TECHNICAL INVESTIGATION</text></svg>`;
-  const png = await sharp(Buffer.from(svg)).png().toBuffer();
+  const png = await sharp(Buffer.from(svg)).webp().toBuffer();
   return new Response(new Uint8Array(png), {
     headers: { 'Content-Type': 'image/png' },
   });

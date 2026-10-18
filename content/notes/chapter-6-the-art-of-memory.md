@@ -3,7 +3,7 @@ title: 'The Art of Memory Forensics Chapter-06'
 date: 2026-10-13 00:00:00
 category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
-cover: /images/notes/chapter-6-the-art-of-memory/0.png
+cover: /images/notes/chapter-6-the-art-of-memory/0.webp
 description: 'Brief notes summarizing Chapter 6 of The Art of Memory Forensics, focusing on process enumeration, tokens, SIDs, privileges, handles, DKOM, and process behavior analysis.'
 toc: true
 ---
@@ -16,7 +16,7 @@ In this chapter, we will focus on active processes in memory, the handles associ
 
 Each running process is represented in memory by an _EPROCESS structure. It also has threads, which are responsible for executing code, handles that reference objects the process interacts with such as network resources, files, registry keys, and other objects, and VADs, which describe the process’s virtual address space.
 
-![image](/images/notes/chapter-6-the-art-of-memory/1.png)
+![image](/images/notes/chapter-6-the-art-of-memory/1.webp)
 
 ### _EPROCESS Data Structures
 
@@ -68,7 +68,7 @@ The `_LIST_ENTRY` contains:
 - `Flink` points to the `ActiveProcessLinks` of the next process.
 - `Blink` points to the `ActiveProcessLinks` of the previous process.
 
-![image](/images/notes/chapter-6-the-art-of-memory/2.png)
+![image](/images/notes/chapter-6-the-art-of-memory/2.webp)
 
 Tools such as Task Manager and Process Explorer rely on Windows APIs, such as `NtQuerySystemInformation`, to enumerate active processes. Because these methods depend on the active process list, DKOM attacks can hide processes by unlinking them from the list.
 
@@ -102,7 +102,7 @@ You can use the available options with psscan to display processes in a graphica
 ```bash
 $ vol2 -f MemoryDump_Lab4.raw --profile Win7SP1x64 psscan --output=dot --output-file=process.dot
 
-$  dot -Tpng process.dot -o process.png
+$  dot -Tpng process.dot -o process.webp
 ```
 
 ### Detecting DKOM Attacks
@@ -143,7 +143,7 @@ Because process lists can be manipulated, investigators should not rely on a sin
 
 `psxview` compares all seven views to identify discrepancies that may indicate hidden processes or DKOM manipulation.
 
-![image](/images/notes/chapter-6-the-art-of-memory/3.png)
+![image](/images/notes/chapter-6-the-art-of-memory/3.webp)
 
 It is normal to see several False values when using `psxview`. This does not always mean that a process is hidden. The process may no longer be running, or it may have started before a particular identification method became available.
 
@@ -151,7 +151,7 @@ It is normal to see several False values when using `psxview`. This does not alw
 
 To reduce these normal false positives, you can use the `--apply-rules` option with psxview. When this option is enabled, valid exceptions are marked as `Okay` instead of `False`, making suspicious discrepancies easier to identify.
 
-![image](/images/notes/chapter-6-the-art-of-memory/4.png)
+![image](/images/notes/chapter-6-the-art-of-memory/4.webp)
 
 ## Process Tokens
 

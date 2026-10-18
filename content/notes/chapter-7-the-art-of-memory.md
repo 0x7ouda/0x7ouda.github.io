@@ -3,7 +3,7 @@ title: 'The Art of Memory Forensics Chapter-07'
 date: 2026-10-14 00:00:00
 category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
-cover: /images/notes/chapter-7-the-art-of-memory/0.png
+cover: /images/notes/chapter-7-the-art-of-memory/0.webp
 description: 'explores Windows process memory internals, including virtual address spaces, page tables, VADs, heaps, YARA scanning, and recovery of runtime artifacts such as passwords and encryption keys.'
 toc: true
 ---
@@ -16,7 +16,7 @@ Unlike the previous chapter, which focused mainly on process-related kernel stru
 
 Each process has its own virtual address space, which makes it appear as if it is running separately in memory. From the process’s point of view, it can address memory starting from 0 up to `MmHighestUserAddress`, even though the underlying physical memory is shared and managed by the operating system.
 
-![image](/images/notes/chapter-7-the-art-of-memory/1.png)
+![image](/images/notes/chapter-7-the-art-of-memory/1.webp)
 
 **Note:** These memory regions are not always located in the same positions shown in the diagram. Their addresses can vary between processes and executions, especially because of ASLR (Address Space Layout Randomization), which randomizes the locations of memory regions.
 
@@ -26,7 +26,7 @@ Windows provides several APIs for allocating process memory, and although they d
 
 `VirtualAllocEx` can allocate memory inside another process by using a handle to the target process, which makes it especially relevant to code-injection analysis.`VirtualAlloc` and `VirtualAllocEx` can also reserve virtual address ranges before committing them, allowing applications to save address space without immediately using physical memory. Memory regions created this way can later be inspected with `VirtualQueryEx`, which has also been used by malware to enumerate process memory before scanning it for sensitive data.
 
-![image](/images/notes/chapter-7-the-art-of-memory/2.png)
+![image](/images/notes/chapter-7-the-art-of-memory/2.webp)
 
 ## Enumerating Process Memory
 
@@ -109,7 +109,7 @@ Owner: Process chrome.exe Pid 3660
 
 The book provides an example using the Zeus banking Trojan, to show how analysts recovered its `RC4` encryption key from process memory. First, they reverse-engineered the Zeus executable and identified recognizable instruction patterns inside functions related to configuration decryption and `RC4` key usage.
 
-![image](/images/notes/chapter-7-the-art-of-memory/3.png)
+![image](/images/notes/chapter-7-the-art-of-memory/3.webp)
 
 They then converted those instruction sequences into YARA signatures and used wildcards such as `??` for bytes that could vary between samples, such as addresses, offsets, stack locations, or call targets. One of the rules had the following form:
 

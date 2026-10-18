@@ -4,7 +4,7 @@ date: 2026-01-21 00:00:00
 category: ECDFP_Notes
 description: 'ECDFP notes covering disk forensics fundamentals, CHS/LBA addressing, MBR and GPT structures, boot records, and partition analysis with practical hex examples.'
 tags: [ECDFP_Notes]
-cover: /images/notes/ECDFP_Notes/0.png
+cover: /images/notes/ECDFP_Notes/0.webp
 toc: true
 ---
 
@@ -41,7 +41,7 @@ H -> 8
 
 examble to access first sector `hex 00 01 00` binnary `0000 0000 0000 0001 0000 0000` access the end sector `hex ff ff ff` binnary `1111 1111 1111 1111 1111 1111 `
 
-![Image](/images/notes/ECDFP_Notes/1.png)
+![Image](/images/notes/ECDFP_Notes/1.webp)
 
 now, if we want to calculate the total hard drive space, it would be as follows:
 
@@ -63,9 +63,9 @@ Note: A sector is the smallest unit of an HDD that can be read from or written t
 
 block = 128 * 4096 / 1024 = 512 KB
 
-![Image](/images/notes/ECDFP_Notes/2.png)
+![Image](/images/notes/ECDFP_Notes/2.webp)
 
-![Image](/images/notes/ECDFP_Notes/3.png)
+![Image](/images/notes/ECDFP_Notes/3.webp)
 
 ## The difference between Volume and partition
 
@@ -73,7 +73,7 @@ volume: is a collection of sectors that don’t have to be physically consequent
 
 partition: is a collection of consequential number of sectors
 
-![Image](/images/notes/ECDFP_Notes/4.png)
+![Image](/images/notes/ECDFP_Notes/4.webp)
 
 Case #1:
 
@@ -93,7 +93,7 @@ Now you must be asking: How does my system understand where each logical partiti
 
 The answer is very easy: use an addressing table!
 
-![Image](/images/notes/ECDFP_Notes/5.png)
+![Image](/images/notes/ECDFP_Notes/5.webp)
 
 ## Disk Partitioning
 
@@ -101,7 +101,7 @@ The answer is very easy: use an addressing table!
 
 MBR is the first sector of a disk `CHS = 0,0,1`, `LBA = 0`, that contains `boot code`, a `partition table` for up to four primary partitions, and a `signature`, and it is used to initiate the boot process in BIOS-based systems.
 
-![Image](/images/notes/ECDFP_Notes/6.png)
+![Image](/images/notes/ECDFP_Notes/6.webp)
 
 #### Boot code
 
@@ -109,7 +109,7 @@ The boot code is 446 bytes and it was previously used to start the operating sys
 
 Modern operating systems today require booting code that could not fit the 446 bytes limit so the boot code section in the MBR today is used to locate the active partition that is marked bootable and call what is known as the Volume Boot Record (VBR).
 
-![Image](/images/notes/ECDFP_Notes/55.png)
+![Image](/images/notes/ECDFP_Notes/55.webp)
 
 ###### The difference between MBR and VBR
 
@@ -119,17 +119,17 @@ The MBR is located in the first sector of the disk and is responsible for locati
 
 the HDD can be divided into only 4 primary partitions.
 
-![Image](/images/notes/ECDFP_Notes/7.png)
+![Image](/images/notes/ECDFP_Notes/7.webp)
 
 ###### Explanation of the 16 bytes of the partition entry in the partition table:
 
-![Image](/images/notes/ECDFP_Notes/8.png)
+![Image](/images/notes/ECDFP_Notes/8.webp)
 
-![Image](/images/notes/ECDFP_Notes/77.png)
+![Image](/images/notes/ECDFP_Notes/77.webp)
 
 In an MBR-partitioned disk, if more than four partitions are needed, one primary partition can be designated as an extended partition, which acts as a container for multiple logical partitions, as follow
 
-![Image](/images/notes/ECDFP_Notes/9.png)
+![Image](/images/notes/ECDFP_Notes/9.webp)
 
 ## GUID Partition Table (GPT)
 
@@ -143,22 +143,22 @@ GPT overcomes the limitations of MBR by supporting disks larger than 2 TB and al
 - Partitions
 - Backups from GPT header and partition table
 
-![Image](/images/notes/ECDFP_Notes/10.png)
+![Image](/images/notes/ECDFP_Notes/10.webp)
 
 #### Protective MBR
 
 The Protective MBR is located at LBA 0. It is an MBR header that contains boot code, but it is not used in the boot process. It exists solely to prevent legacy tools that do not understand the GPT header from overwriting the disk and repartitioning it. This protection is implemented using a partition entry with type `0xEE` in the MBR partition table.
 
-![Image](/images/notes/ECDFP_Notes/11.png)
+![Image](/images/notes/ECDFP_Notes/11.webp)
 
 #### GPT Header
 
 offset is LBA 1
 
-![Image](/images/notes/ECDFP_Notes/12.png)
+![Image](/images/notes/ECDFP_Notes/12.webp)
 
 examble:
-![Image](/images/notes/ECDFP_Notes/13.png)
+![Image](/images/notes/ECDFP_Notes/13.webp)
 
 - 00-07 --> EFI Signature `EFI PART`
 - 08-11 --> Revision `GPT Revision 1.0`
@@ -178,13 +178,13 @@ examble:
 
 ## Partition entry
 
-![Image](/images/notes/ECDFP_Notes/14.png)
+![Image](/images/notes/ECDFP_Notes/14.webp)
 
-![Image](/images/notes/ECDFP_Notes/15.png)
+![Image](/images/notes/ECDFP_Notes/15.webp)
 
 ## examble:
 
-![Image](/images/notes/ECDFP_Notes/17.png)
+![Image](/images/notes/ECDFP_Notes/17.webp)
 
 you can show the partition entry start from offset 1024
 
@@ -203,7 +203,7 @@ you can show the partition entry start from offset 1024
 
 In short, HPA and DCO are mechanisms used to hide portions of a hard drive. This hidden space can be used legitimately by vendors for recovery data, diagnostics, tracking software, or firmware, and it can also be abused to store malware that is inaccessible to standard software. The key difference is that HPA is implemented at the host level (OS/BIOS), while DCO is implemented at the device firmware level, making DCO more persistent and forensically significant.
 
-![Image](/images/notes/ECDFP_Notes/16.png)
+![Image](/images/notes/ECDFP_Notes/16.webp)
 
 #### Tools to detect HPA && DCO
 

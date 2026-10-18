@@ -3,7 +3,7 @@ title: 'The Art of Memory Forensics Chapter-04'
 date: 2026-10-05 00:00:00
 category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
-cover: /images/notes/chapter-4-the-art-of-memory/0.png
+cover: /images/notes/chapter-4-the-art-of-memory/0.webp
 description: 'Brief notes summarizing Chapter 4 of The Art of Memory Forensics, focusing on memory acquisition methods, dump formats, virtual machine memory, memory conversion, and volatile evidence stored on disk.'
 toc: true
 ---
@@ -16,7 +16,7 @@ Memory acquisition is the process of copying physical memory to persistent stora
 
 ## Acquisition Overview
 
-![image](/images/notes/chapter-4-the-art-of-memory/1.png)
+![image](/images/notes/chapter-4-the-art-of-memory/1.webp)
 
 The correct memory acquisition method depends on the target environment, whether the system is virtual or physical, whether it is running, the available privileges, and the goals of the investigation. Investigators may use VM features, software tools, hardware-assisted DMA, or non-volatile sources such as hibernation and crash files, depending on the case.
 

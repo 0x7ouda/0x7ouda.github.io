@@ -5,7 +5,7 @@ category: ECDFP_Notes
 description: A concise guide to file system forensics, covering FAT and NTFS structures, deleted file recovery, file carving, and practical tools like SleuthKit, Autopsy, and PhotoRec.
 description_in_post: false
 tags: [ECDFP_Notes]
-cover: /images/notes/file-system-analysis-ecdfp/0.png
+cover: /images/notes/file-system-analysis-ecdfp/0.webp
 toc: true
 ---
 
@@ -21,7 +21,7 @@ Can deleted data be recovered?
 When a file is deleted, most file systems typically remove or mark as deleted the metadata entries that reference the file’s data blocks and mark those blocks as free. The underlying data may remain recoverable until it is overwritten (and on SSDs, TRIM may reduce recoverability).
 However, there is still some ambiguity: how do we know which 0s and 1s belong to which sector, and which sector belongs to which file? We need something similar to a map to determine that.
 
-![Image](/images/notes/file-system-analysis-ecdfp/1.png)
+![Image](/images/notes/file-system-analysis-ecdfp/1.webp)
 
 ## FAT (File Allocation Table)
 
@@ -64,38 +64,38 @@ If, in a file system, each cluster contains 4 sectors, the sectors within that c
 
 ### examble:
 
-![Image](/images/notes/file-system-analysis-ecdfp/2.png)
+![Image](/images/notes/file-system-analysis-ecdfp/2.webp)
 
 In the previous example, we see that File 1 has a size of 512 bytes and File 2 has a size of 1024 bytes. In both cases, one cluster is allocated to each file. We can see that for File 1, there are 3 unused sectors, but they are still allocated to the file. Similarly, for File 2, there are 2 unused sectors, but they are also allocated to that file.
 
 ### How many clusters could each type of FAT file system represent?
 
-![Image](/images/notes/file-system-analysis-ecdfp/3.png)
+![Image](/images/notes/file-system-analysis-ecdfp/3.webp)
 
 ### How is the cluster size determined in Windows?
 
 In Windows, the default cluster size is determined based on the volume size during formatting. As the volume size increases, Windows increases the cluster size to reduce overhead, limit FAT table growth, and help maintain performance, as shown in the following table.
 
-![Image](/images/notes/file-system-analysis-ecdfp/4.png)
+![Image](/images/notes/file-system-analysis-ecdfp/4.webp)
 
 ## FAT Structures
 
 The FAT12/16/32 file system consists of three main areas: the reserved area, the FAT area, and the data area.
 
-![Image](/images/notes/file-system-analysis-ecdfp/5.png)
+![Image](/images/notes/file-system-analysis-ecdfp/5.webp)
 
 ### Reserved Area
 
 The size of the reserved area differs from FAT 12 /16 /32, as shown in the following table.
-![Image](/images/notes/file-system-analysis-ecdfp/6.png)
+![Image](/images/notes/file-system-analysis-ecdfp/6.webp)
 
 Reserved Area in FAT 12/16
 
-![Image](/images/notes/file-system-analysis-ecdfp/7.png)
+![Image](/images/notes/file-system-analysis-ecdfp/7.webp)
 
 Reserved Area in FAT 32
 
-![Image](/images/notes/file-system-analysis-ecdfp/8.png)
+![Image](/images/notes/file-system-analysis-ecdfp/8.webp)
 
 - sectro 0 & 6 are used fro volume boot sector
 - sector 1 & 7 are used for file system information
@@ -106,21 +106,21 @@ Reserved Area in FAT 32
 
 boot sector for FAT12/16
 
-![Image](/images/notes/file-system-analysis-ecdfp/9.png)
+![Image](/images/notes/file-system-analysis-ecdfp/9.webp)
 
 #### Note: the sizes for BPB & EBPB & bootstrap code varies based on the operating system and versions.
 
 boot sector for FAT32
 
-![Image](/images/notes/file-system-analysis-ecdfp/10.png)
+![Image](/images/notes/file-system-analysis-ecdfp/10.webp)
 
 ### examble:
 
-![Image](/images/notes/file-system-analysis-ecdfp/11.png)
+![Image](/images/notes/file-system-analysis-ecdfp/11.webp)
 
 You can determine what each byte means from the following table
 
-![Image](/images/notes/file-system-analysis-ecdfp/12.png)
+![Image](/images/notes/file-system-analysis-ecdfp/12.webp)
 
 ## FSINFO sector
 
@@ -128,11 +128,11 @@ FSINFO is typically located at sector 1 (right after the boot sector), as specif
 
 ### byte table from FSINFO sector
 
-![Image](/images/notes/file-system-analysis-ecdfp/13.png)
+![Image](/images/notes/file-system-analysis-ecdfp/13.webp)
 
 ### examble:
 
-![Image](/images/notes/file-system-analysis-ecdfp/14.png)
+![Image](/images/notes/file-system-analysis-ecdfp/14.webp)
 
 - 0-3 --> FSInfo signature = `52 52 61 64 `= RRaA
 - 4-483 --> Reserved
@@ -150,7 +150,7 @@ free-space = sector per cluster * num of free cluster * 512
 
 free-space = 2 * 89109 * 512 = 91,247,616 byte
 
-![Image](/images/notes/file-system-analysis-ecdfp/15.png)
+![Image](/images/notes/file-system-analysis-ecdfp/15.webp)
 
 ## FAT Area
 
@@ -171,7 +171,7 @@ Note: the first 8 byte in FAT area is reserved first 4 reserved to Media-Type an
 
 ### FAT entry examble:
 
-![Image](/images/notes/file-system-analysis-ecdfp/16.png)
+![Image](/images/notes/file-system-analysis-ecdfp/16.webp)
 
 ## Data Area
 
@@ -196,12 +196,12 @@ FAT32 file system have two types of directory entries
 
 The SFN contains the file name in only 11 bytes: 8 bytes for the name and 3 bytes for the extension If the name is shorter than 8 characters, it is padded with spaces.
 
-![Image](/images/notes/file-system-analysis-ecdfp/17.png)
+![Image](/images/notes/file-system-analysis-ecdfp/17.webp)
 
 #### SDate byte format:
 
-![Image](/images/notes/file-system-analysis-ecdfp/18.png)
-![Image](/images/notes/file-system-analysis-ecdfp/19.png)
+![Image](/images/notes/file-system-analysis-ecdfp/18.webp)
+![Image](/images/notes/file-system-analysis-ecdfp/19.webp)
 
 ### Long File Name
 
@@ -211,7 +211,7 @@ However, an SFN is still required even when an LFN exists. In this case, the SFN
 
 ### Long File Name Structure:
 
-![Image](/images/notes/file-system-analysis-ecdfp/20.png)
+![Image](/images/notes/file-system-analysis-ecdfp/20.webp)
 
 ## File Deletion
 
@@ -253,13 +253,13 @@ A feature that generates point-in-time snapshots of files and volumes, even whil
 
 NTFS relies on several metadata files that define its fundamental structure, including $Boot, $LogFile, $MFT.
 
-![Image](/images/notes/file-system-analysis-ecdfp/21.png)
+![Image](/images/notes/file-system-analysis-ecdfp/21.webp)
 
 ### Volume Boot Record
 
 the `$Boot` file holds the bootstrap code for bootable volumes, or an error message if the volume is not bootable.
 
-![Image](/images/notes/file-system-analysis-ecdfp/22.png)
+![Image](/images/notes/file-system-analysis-ecdfp/22.webp)
 
 ## Master File Table $MFT
 
@@ -267,11 +267,11 @@ The Master File Table (MFT) is composed of multiple entries, where each entry st
 
 ### The reserved entries in the MFT file
 
-![Image](/images/notes/file-system-analysis-ecdfp/23.png)
+![Image](/images/notes/file-system-analysis-ecdfp/23.webp)
 
 ### MFT entry
 
-![Image](/images/notes/file-system-analysis-ecdfp/24.png)
+![Image](/images/notes/file-system-analysis-ecdfp/24.webp)
 
 #### Fixup Arrays
 
@@ -279,7 +279,7 @@ Fixup arrays are used to detect sector corruption within multi-sector structures
 
 ##### examble
 
-![Image](/images/notes/file-system-analysis-ecdfp/25.png)
+![Image](/images/notes/file-system-analysis-ecdfp/25.webp)
 
 ### MFT File Reference Number
 

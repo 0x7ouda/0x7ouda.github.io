@@ -3,7 +3,7 @@ title: 'The Art of Memory Forensics Chapter-02'
 date: 2026-09-29 00:00:00
 category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
-cover: /images/notes/chapter-2-the-art-of-memory/0.png
+cover: /images/notes/chapter-2-the-art-of-memory/0.webp
 description: 'Brief notes summarizing Chapter 2 of The Art of Memory Forensics, focusing on different data structures, how they are organized and stored in memory, and how they are interpreted during memory analysis.'
 toc: true
 ---
@@ -14,7 +14,7 @@ Data structures define how program and operating system data is organized in mem
 
 The book focuses on basic C data types because C is widely used in systems programming and provides direct control over memory. A pointer stores a virtual memory address and can reference any type of data. To access the data referenced by a pointer, the address must be dereferenced and translated from virtual to physical memory. Therefore, the ability to perform virtual address translation is essential for analyzing many data structures in physical memory.
 
-![image](/images/notes/chapter-2-the-art-of-memory/1.png)
+![image](/images/notes/chapter-2-the-art-of-memory/1.webp)
 
 ## Array
 
