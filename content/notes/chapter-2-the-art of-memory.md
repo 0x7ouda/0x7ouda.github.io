@@ -1,7 +1,7 @@
 ---
 title: 'The Art of Memory Forensics Chapter-02'
 date: 2026-09-29 00:00:00
-category: 'The Art of Memory Forensics '
+category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
 cover: /images/notes/chapter-2-the-art-of-memory/0.png
 description: 'Brief notes summarizing Chapter 2 of The Art of Memory Forensics, focusing on different data structures, how they are organized and stored in memory, and how they are interpreted during memory analysis.'

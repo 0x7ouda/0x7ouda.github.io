@@ -25,6 +25,13 @@ for (const post of posts) {
 const tags = [...tagCounts.entries()].sort(
   (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
 );
+
+const homeUrl = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+const tagUrl = (tag: string) =>
+  `${homeUrl}?tag=${encodeURIComponent(tag)}#latest`;
 ---
 
 {tags.length > 0 && (
@@ -38,21 +45,25 @@ const tags = [...tagCounts.entries()].sort(
         <div class="tag-rail-track">
           <div class="tag-rail-group">
             {tags.map(([tag, count]) => (
-              <span class="tag-rail-chip">
+              <a
+                class="tag-rail-chip"
+                href={tagUrl(tag)}
+                aria-label={`Show posts tagged ${tag}`}
+              >
                 <span class="tag-hash">#</span>
                 <span>{tag}</span>
                 <sup>{count}</sup>
-              </span>
+              </a>
             ))}
           </div>
 
           <div class="tag-rail-group" aria-hidden="true">
             {tags.map(([tag, count]) => (
-              <span class="tag-rail-chip">
+              <a class="tag-rail-chip" href={tagUrl(tag)} tabindex="-1">
                 <span class="tag-hash">#</span>
                 <span>{tag}</span>
                 <sup>{count}</sup>
-              </span>
+              </a>
             ))}
           </div>
         </div>
@@ -144,6 +155,8 @@ const tags = [...tagCounts.entries()].sort(
 
     font: 13px var(--mono);
     white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
 
     transition:
       color 0.2s,
@@ -158,6 +171,11 @@ const tags = [...tagCounts.entries()].sort(
     background: #25321f;
 
     transform: translateY(-1px);
+  }
+
+  .tag-rail-chip:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
   }
 
   .tag-hash {

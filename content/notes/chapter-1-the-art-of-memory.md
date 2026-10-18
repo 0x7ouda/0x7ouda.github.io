@@ -1,7 +1,7 @@
 ---
 title: 'The Art of Memory Forensics Chapter-01'
 date: 2026-09-21 00:00:00
-category: 'The Art of Memory Forensics '
+category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
 cover: /images/notes/chapter-1-the-art-of-memory/0.png
 description: 'Brief notes summarizing Chapter 1 of The Art of Memory Forensics, with a focus on system overview and core operating system concepts.'

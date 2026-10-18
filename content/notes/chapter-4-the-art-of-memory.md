@@ -1,7 +1,7 @@
 ---
 title: 'The Art of Memory Forensics Chapter-04'
 date: 2026-10-05 00:00:00
-category: 'The Art of Memory Forensics '
+category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
 cover: /images/notes/chapter-4-the-art-of-memory/0.png
 description: 'Brief notes summarizing Chapter 4 of The Art of Memory Forensics, focusing on memory acquisition methods, dump formats, virtual machine memory, memory conversion, and volatile evidence stored on disk.'

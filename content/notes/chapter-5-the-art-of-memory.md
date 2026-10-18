@@ -1,7 +1,7 @@
 ---
 title: 'The Art of Memory Forensics Chapter-05'
 date: 2026-10-09 00:00:00
-category: 'The Art of Memory Forensics '
+category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
 cover: /images/notes/chapter-5-the-art-of-memory/0.png
 description: 'Brief notes summarizing Chapter 5 of (AMF), focusing on Windows objects, kernel pool allocations, pool tags, pool-scanning techniques, Big Page Pool analysis, and alternative methods for locating kernel objects.'

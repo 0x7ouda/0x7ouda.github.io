@@ -11,6 +11,9 @@ import { getPosts } from '../lib/content';
 import { path } from '../lib/site';
 
 const posts = await getPosts();
+const homeUrl = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <Base home>
@@ -67,6 +70,17 @@ const posts = await getPosts();
       <span>OBSERVATIONS → UNDERSTANDING</span>
     </div>
 
+    <p
+      class="tag-filter-notice"
+      data-tag-filter-status
+      hidden
+      aria-live="polite"
+    >
+      Showing <strong data-active-tag></strong> —{' '}
+      <span data-results-count></span> posts.
+      <a href={`${homeUrl}#latest`}>Clear filter</a>
+    </p>
+
     <div class="post-grid">
       {posts.map((post) => (
         <PostCard post={post} />
@@ -74,3 +88,62 @@ const posts = await getPosts();
     </div>
   </section>
 </Base>
+
+<script>
+  function applyTagFilter() {
+    const selectedTag = new URLSearchParams(window.location.search)
+      .get('tag')
+      ?.trim()
+      .toLowerCase();
+
+    const cards = document.querySelectorAll<HTMLElement>(
+      '.post-grid [data-post-card]',
+    );
+    let visibleCount = 0;
+
+    cards.forEach((card) => {
+      const tags = (card.dataset.tags ?? '').split('|||');
+      const matches = !selectedTag || tags.includes(selectedTag);
+      card.hidden = !matches;
+      if (matches) visibleCount++;
+    });
+
+    const notice = document.querySelector<HTMLElement>(
+      '[data-tag-filter-status]',
+    );
+    const activeTag = document.querySelector<HTMLElement>('[data-active-tag]');
+    const resultsCount = document.querySelector<HTMLElement>(
+      '[data-results-count]',
+    );
+
+    if (notice) notice.hidden = !selectedTag;
+    if (activeTag) activeTag.textContent = selectedTag ?? '';
+    if (resultsCount) resultsCount.textContent = String(visibleCount);
+  }
+
+  applyTagFilter();
+  document.addEventListener('astro:page-load', applyTagFilter);
+</script>
+
+<style>
+  /* The existing card layout can override the browser's default [hidden] style. */
+  :global(.post-grid [data-post-card][hidden]),
+  .tag-filter-notice[hidden] {
+    display: none !important;
+  }
+
+  .tag-filter-notice {
+    margin: 0 0 20px;
+    color: var(--faint);
+    font: 13px/1.6 var(--mono);
+  }
+
+  .tag-filter-notice strong {
+    color: var(--text);
+  }
+
+  .tag-filter-notice a {
+    color: var(--green);
+    margin-inline-start: 10px;
+  }
+</style>
