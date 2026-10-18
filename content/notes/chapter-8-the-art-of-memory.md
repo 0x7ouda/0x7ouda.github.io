@@ -1,6 +1,6 @@
 ---
 title: 'The Art of Memory Forensics Chapter-08'
-date: 2026-10-17 00:00:00
+date: 2026-10-16 00:00:00
 category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
 cover: /images/notes/chapter-8-the-art-of-memory/0.png
