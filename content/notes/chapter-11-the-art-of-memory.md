@@ -3,7 +3,7 @@ title: 'The Art of Memory Forensics Chapter-11'
 date: 2026-10-20 00:00:00
 category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
-cover: /images/notes/chapter-8-the-art-of-memory/cover_10.webp
+cover: /images/notes/chapter-8-the-art-of-memory/cover_11.webp
 description: 'Explores Windows network forensics using Volatility, covering TCP/IP structures, network connections, hidden activity, DNS cache, browser history and packet recovery'
 toc: true
 ---

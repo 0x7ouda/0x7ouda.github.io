@@ -3,7 +3,7 @@ title: 'The Art of Memory Forensics Chapter-10'
 date: 2026-10-18 00:00:00
 category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
-cover: /images/notes/chapter-8-the-art-of-memory/cover_11.webp
+cover: /images/notes/chapter-8-the-art-of-memory/cover_10.webp
 description: 'Explores Windows Registry forensics in memory, covering registry hives, Volatility plugins, UserAssist, Shimcache, ShellBags, password hashes, and LSA secrets for malware detection and activity reconstruction.'
 toc: true
 ---
