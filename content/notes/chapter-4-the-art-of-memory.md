@@ -80,7 +80,7 @@ A Windows hibernation file (hiberfil.sys) stores a compressed copy of system mem
 
 Memory from a virtual machine can be acquired either from inside the guest operating system or from the hypervisor.Hypervisor-based acquisition is often less invasive because no acquisition tool needs to run inside the guest.
 
-**VMware** may store memory in `.vmem`, `.vmsn`, or `.vmss` files, sometimes requiring both memory and metadata files to reconstruct the guest’s physical memory.
+**VMware** typically stores guest RAM in `.vmem` files, while `.vmss` and `.vmsn` contain suspended-state or snapshot metadata. Volatility may require these companion files to correctly reconstruct guest physical memory.
 
 **VirtualBox and QEMU** can store VM memory in ELF64 core dumps, where physical memory is represented by different segments.
 
