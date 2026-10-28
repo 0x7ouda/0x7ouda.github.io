@@ -4,7 +4,7 @@ date: 2026-10-28 00:00:00
 category: 'The Art of Memory Forensics'
 tags: [The art of memory forensics]
 cover: /images/notes/chapter-13-the-art-of-memory/0.webp
-description: 'Explores Windows service forensics using Volatility, covering the SCM, service persistence, registry artifacts, service hijacking, and hidden service detection.'
+description: 'Explores Windows kernel forensics and rootkit detection using Volatility, covering hidden drivers, IRP and SSDT hooking, device trees, kernel callbacks, timers, and memory-based malware analysis.'
 toc: true
 ---
 
