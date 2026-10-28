@@ -8,7 +8,7 @@ description: 'Explores Windows service forensics using Volatility, covering the 
 toc: true
 ---
 
-## Windows Services 
+## Windows Services
 
 **Windows Services** are background components that can be implemented as standalone executables `.exe`, `.dll` based services hosted by processes such as `svchost.exe`, or kernel drivers `.sys`. They can be configured to start automatically without direct user interaction.
 
@@ -17,22 +17,23 @@ Malware can abuse Windows Services to achieve **persistence**, allowing maliciou
 ![image](/images/notes/chapter-12-the-art-of-memory/1.webp)
 
 All configured **Windows Services** are registered under the following Registry key:
+
 ```text
 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services
 ```
+
 Each service has its own subkey containing configuration settings that define its service type, startup behavior, executable or driver path, and dependencies.The **Service Control Manager (SCM)**, implemented by `services.exe`, is responsible for managing Windows Services, including starting, stopping, and monitoring their states.
 
 ### Methods of Installing Windows Services
 
 - **Manual Commands:** Attackers can use `sc create` to register a new service and `sc start` to launch it. These commands may be recovered from memory using Volatility's `cmdscan` or `consoles` plugins.
 - **Batch Scripts:** Malware can automate service installation using `.bat` or `.cmd` scripts that execute `sc` and `reg` commands. These scripts may also leave artifacts on disk.
-- **Windows APIs:** Malware can directly call `CreateService` and `StartService` to install and launch services. 
+- **Windows APIs:** Malware can directly call `CreateService` and `StartService` to install and launch services.
 - **WMI:** Attackers can use the `Win32_Service` WMI class and its `Create` and `StartService` methods to create and launch Windows Services without directly executing `sc.exe`.
 
 **Note:** Attackers can use lower-level APIs and alternative techniques to install or start Windows Services while avoiding some traditional service-creation artifacts, such as SCM records and certain event logs. They may also stop security-related services using different methods to reduce the chances of detection.
 
 Therefore, during memory forensics investigations, analysts should examine not only **running services** but also **stopped services**, especially those that normally run by default or are associated with security solutions.
-
 
 ## svcscan Plugin
 
@@ -100,7 +101,7 @@ ServiceDll: %SystemRoot%\system\ersvc.dll
 
 To detect these techniques, analysts should compare service configurations and binaries against a **known-good baseline or whitelist** from a clean system with the same Windows version and configuration.
 
-### Hiding Windows Services 
+### Hiding Windows Services
 
 Attackers can hide Windows Services from live system analysis tools by **unlinking their `_SERVICE_RECORD` structures from the doubly linked list** maintained by the Service Control Manager (SCM).
 
@@ -111,7 +112,6 @@ However, unlinking a service does not remove its data from memory or necessarily
 **Note:** Even when a service is stopped normally, its `_SERVICE_RECORD` can remain in the linked list. Stopping a service is different from unlinking it.
 
 ![image](/images/notes/chapter-12-the-art-of-memory/2.webp)
-
 
 ## At The End of This Chapter
 

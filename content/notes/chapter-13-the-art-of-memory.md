@@ -59,7 +59,7 @@ Kernel modules can be loaded using different methods, each leaving different for
 - **`NtLoadDriver`:** Loads a driver directly using existing registry configuration, bypassing some SCM-related artifacts. It can be unloaded using `NtUnloadDriver`.
 - **`NtSetSystemInformation` (`SystemLoadAndCallImage`):** A historical loading technique that does not require service registry entries but makes unloading difficult.
 
-## Modules Plugins 
+## Modules Plugins
 
 ### modules
 
@@ -200,13 +200,13 @@ The `_DRIVER_OBJECT` structure contains operational information about a kernel d
 
 **IRPs (I/O Request Packets)** are data structures used by the Windows I/O Manager to represent and deliver I/O requests, such as read, write, and device control operations, to drivers for processing.
 
-### driverscan 
+### driverscan
 
 The `driverscan` plugin uses **pool tag scanning** to locate `_DRIVER_OBJECT` structures through the `Driv` pool tag.
 
 Unlike `modscan`, which searches for kernel module metadata (`_KLDR_DATA_TABLE_ENTRY`) using the `MmLd` pool tag, `driverscan` focuses on driver objects and their associated information.
 
-```bash 
+```bash
 $ python vol.py -f memory.dmp --profile=Win7SP1x64 driverscan
 Volatility Foundation Volatility Framework 2.4
 Offset(P) Start Size Service Key Driver Name
@@ -294,6 +294,7 @@ DriverStartIo: 0xf97ea40e
 0x81926e46 3b4808 CMP ECX, [EAX+0x8]
 [snip]
 ```
+
 As shown in the previous example, all IRP handlers in `vmscsi.sys` point to the same address within the legitimate driver's memory.
 
 However, when we examine that address using `volshell`, we discover a **redirector stub** that indirectly redirects execution to another memory address containing the rootkit's actual executable code.
@@ -336,11 +337,12 @@ DRV 0x0253d180 \FileSystem\Ntfs
 ---------| ATT 0x81f47020 (?) - \FileSystem\FltMgr FILE_DEVICE_DISK_FILE_SYSTEM
 ------------| ATT 0x81fb9680 (?) - \Driver\MRxNet FILE_DEVICE_DISK_FILE_SYSTEM
 ```
+
 As shown in the example, the Stuxnet rootkit attached malicious device objects belonging to `\Driver\MRxNet` to several file system device stacks, including `Ntfs`, `Cdfs`, `vmhgfs`, and `MRxSmb`.
 
 This allowed the rootkit to intercept and filter I/O requests, potentially hiding specific files and directories from antivirus software and other applications.
 
-### SSDT 
+### SSDT
 
 The **System Service Descriptor Table (SSDT)** is a kernel structure that helps Windows locate the appropriate kernel-mode functions for executing system calls.
 
@@ -401,7 +403,6 @@ SSDT[0] at 80501030 with 284 entries
  Entry 0x0115: 0x805a82f6 (NtWriteVirtualMemory) owned by ntoskrnl.exe
 ```
 
-
 In this example, the `ssdt` plugin detects three different instances of `SSDT[0]`, all containing 284 entries.The first two tables appear to be malicious copies because their `NtWriteVirtualMemory` entries (`0x0115`) point to the address `0x817315c1`, which is associated with an unexpected owner (`00000B9D`).
 
 However, the third table appears to be the original, legitimate SSDT because its `NtWriteVirtualMemory` entry points to `0x805a82f6`, a function address within `ntoskrnl.exe`.
@@ -446,7 +447,7 @@ PsSetLoadImageNotifyRoutine 0x805f81a6 ntoskrnl.exe -
 PsSetLoadImageNotifyRoutine 0xf895ad06 mrxcls.sys -
 PsSetCreateThreadNotifyRoutine 0xb240cc9a PROCMON20.SYS -
 PsSetCreateProcessNotifyRoutine 0xf87ad194 vmci.sys -
-PsSetCreateProcessNotifyRoutine 0xb240cb94 PROCMON20.SYS - 
+PsSetCreateProcessNotifyRoutine 0xb240cb94 PROCMON20.SYS -
 
 ```
 
@@ -489,4 +490,3 @@ Kernel rootkits can hide malicious code, manipulate operating system behavior, a
 By analyzing and correlating these artifacts, investigators can locate hidden malicious code, extract it from memory, and perform further analysis to understand the rootkit's behavior.
 
 ### If you notice any issues or incorrect concepts, please feel free to contact me. Thank you.
-
