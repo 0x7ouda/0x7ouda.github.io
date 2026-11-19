@@ -181,13 +181,13 @@ Finally, restart the VM, and WinDbg should connect to the kernel. Once connected
 
 #### Reading and Writing Memory
 
-| Command               | Description                                                                                                           | Example / Usage                  |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| db address          | Displays memory as hexadecimal bytes alongside their ASCII representation. Useful for examining raw data and buffers. | `db 0xFFFF800012340000`          |
-| dd address          | Displays memory as 32-bit DWORD values (4 bytes each). Useful for examining integers and 32-bit data.                 | `dd 0xFFFF800012340000`          |
-| dq address          | Displays memory as 64-bit QWORD values (8 bytes each). Useful for examining 64-bit values and pointers.               | `dq 0xFFFF800012340000`          |
-| da address          | Reads memory and displays it as a null-terminated ASCII string.                                                       | `da 0xFFFF800012340000`          |
-| du address          | Reads memory and displays it as a null-terminated Unicode (UTF-16) string.                                            | `du 0xFFFF800012340000`          |
+| Command           | Description                                                                                                           | Example / Usage                  |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| db address        | Displays memory as hexadecimal bytes alongside their ASCII representation. Useful for examining raw data and buffers. | `db 0xFFFF800012340000`          |
+| dd address        | Displays memory as 32-bit DWORD values (4 bytes each). Useful for examining integers and 32-bit data.                 | `dd 0xFFFF800012340000`          |
+| dq address        | Displays memory as 64-bit QWORD values (8 bytes each). Useful for examining 64-bit values and pointers.               | `dq 0xFFFF800012340000`          |
+| da address        | Reads memory and displays it as a null-terminated ASCII string.                                                       | `da 0xFFFF800012340000`          |
+| du address        | Reads memory and displays it as a null-terminated Unicode (UTF-16) string.                                            | `du 0xFFFF800012340000`          |
 | eb address value  | Writes one or more bytes to a memory address.                                                                         | `eb 0x401000 90`                 |
 | ed address value  | Writes a 32-bit DWORD value (4 bytes) to memory.                                                                      | `ed 0x401000 12345678`           |
 | eq address value  | Writes a 64-bit QWORD value (8 bytes) to memory.                                                                      | `eq 0xFFFF800012340000 12345678` |
@@ -196,28 +196,28 @@ Finally, restart the VM, and WinDbg should connect to the kernel. Once connected
 
 #### 2. Memory Expressions
 
-| Expression     | Description                                                                                         | Example / Usage           |
-| -------------- | --------------------------------------------------------------------------------------------------- | ------------------------- |
+| Expression   | Description                                                                                         | Example / Usage           |
+| ------------ | --------------------------------------------------------------------------------------------------- | ------------------------- |
 | dwo(address) | Reads a 32-bit DWORD value from a memory address.                                                   | `dwo(0x401000)`           |
 | poi(address) | Reads a pointer-sized value from memory (4 bytes in a 32-bit target or 8 bytes in a 64-bit target). | `poi(0xFFFF800012340000)` |
 
 #### 3. Symbols and Modules
 
-| Command              | Description                                                                                                                          | Example / Usage           |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------- |
-| x module!pattern | Searches for symbols (functions, variables, and other named symbols) matching a specified pattern in a module.                       | `x nt!*CreateProcess*`    |
+| Command            | Description                                                                                                                          | Example / Usage           |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------- |
+| x module!pattern   | Searches for symbols (functions, variables, and other named symbols) matching a specified pattern in a module.                       | `x nt!*CreateProcess*`    |
 | ln address         | Displays the nearest known symbols before or after a given address. Useful for identifying which function a pointer might reference. | `ln 0xFFFFF80012345678`   |
-| lm                   | Lists the modules currently loaded in the target, including their address ranges.                                                    | `lm`                      |
+| lm                 | Lists the modules currently loaded in the target, including their address ranges.                                                    | `lm`                      |
 | lm a address       | Identifies the loaded module that contains a specific memory address.                                                                | `lm a 0xFFFFF80012345678` |
-| .symfix C:\Symbols   | Configures the Microsoft Symbol Server and specifies a local folder for storing downloaded symbol files.                             | `.symfix C:\Symbols`      |
-| .reload              | Reloads symbol information for the target modules. Useful after configuring the symbol path or loading new modules.                  | `.reload`                 |
+| .symfix C:\Symbols | Configures the Microsoft Symbol Server and specifies a local folder for storing downloaded symbol files.                             | `.symfix C:\Symbols`      |
+| .reload            | Reloads symbol information for the target modules. Useful after configuring the symbol path or loading new modules.                  | `.reload`                 |
 
 #### 4. Viewing Kernel Structures
 
-| Command                             | Description                                                                                                                                                         | Example / Usage                           |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| dt module!structure             | Displays the structure layout, including its fields and their offsets.                                                                                              | `dt nt!_DRIVER_OBJECT`                    |
-| dt module!structure address   | Displays the actual field values of a structure stored at a specific memory address.                                                                                | `dt nt!_DRIVER_OBJECT 0xFFFF800012340000` |
+| Command                           | Description                                                                                                                                                         | Example / Usage                           |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| dt module!structure               | Displays the structure layout, including its fields and their offsets.                                                                                              | `dt nt!_DRIVER_OBJECT`                    |
+| dt module!structure address       | Displays the actual field values of a structure stored at a specific memory address.                                                                                | `dt nt!_DRIVER_OBJECT 0xFFFF800012340000` |
 | !drvobj driver 2                  | Displays information about a driver object, including the addresses of its dispatch routines. The `2` flag requests the dispatch routine entry points.              | `!drvobj \Driver\Example 2                |
 | !devobj device_name               | Displays information about a device object, including its address and the associated driver object.                                                                 | !devobj FileWriterDevice                  |
 | !devhandles device_object_address | Lists all processes that currently hold a handle to the specified device object. Useful for identifying which user-mode application is communicating with a driver. | !devhandles 826eb030                      |
@@ -225,10 +225,10 @@ Finally, restart the VM, and WinDbg should connect to the kernel. Once connected
 
 #### 5. Disassembly and Breakpoints
 
-| Command              | Description                                                                                                                                             | Example / Usage            |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| u address          | Disassembles the instructions starting at the specified address. Useful for examining the code behind a suspicious function pointer.                    | `u 0xFFFFF80012345678`     |
-| bp address         | Sets a software breakpoint at a specific address. Execution pauses when the target reaches that address.                                                | `bp 0xFFFFF80012345678`    |
+| Command          | Description                                                                                                                                             | Example / Usage            |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| u address        | Disassembles the instructions starting at the specified address. Useful for examining the code behind a suspicious function pointer.                    | `u 0xFFFFF80012345678`     |
+| bp address       | Sets a software breakpoint at a specific address. Execution pauses when the target reaches that address.                                                | `bp 0xFFFFF80012345678`    |
 | bu module!symbol | Sets a deferred breakpoint using a symbol name. It can be resolved when the corresponding module and symbol become available.                           | `bu nt!NtCreateFile`       |
-| ba w4 address      | Sets a data breakpoint that pauses execution when the specified 4-byte memory location is written to. Useful for tracking changes to a structure field. | `ba w4 0xFFFF800012340000` |
-| g                    | Continues target execution after it has been paused by a breakpoint or manually stopped.                                                                | `g`                        |
+| ba w4 address    | Sets a data breakpoint that pauses execution when the specified 4-byte memory location is written to. Useful for tracking changes to a structure field. | `ba w4 0xFFFF800012340000` |
+| g                | Continues target execution after it has been paused by a breakpoint or manually stopped.                                                                | `g`                        |
